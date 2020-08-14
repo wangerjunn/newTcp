@@ -238,7 +238,7 @@ class GroupCreateVC: BaseViewController, UISearchBarDelegate, UITableViewDelegat
         return topBtnView
     }()
     
-    fileprivate lazy var searchView: UISearchBar = {
+     lazy var searchView: UISearchBar = {
         var searchView = UISearchBar.init()
         
         searchView.placeholder = "请输入用户名（邮箱/手机号）"
@@ -281,7 +281,7 @@ class GroupCreateVC: BaseViewController, UISearchBarDelegate, UITableViewDelegat
         return topBtmLine
     }()
     
-    fileprivate lazy var  listTable: UITableView = {
+    lazy var  listTable: UITableView = {
         var listTable = UITableView.init(frame: .zero, style: .plain)
         listTable.delegate = self
         listTable.dataSource = self

@@ -8,12 +8,27 @@
 
 import UIKit
 
-class SmallTalkVC: RCConversationViewController {
+class SmallTalkVC: RCConversationViewController,RCIMGroupMemberDataSource,RCIMUserInfoDataSource {
+    func getUserInfo(withUserId userId: String!, completion: ((RCUserInfo?) -> Void)!) {
+        print(userId ?? "")
+        let userInfo = RCUserInfo.init(userId: userId, name: "哈哈哈", portrait: "")
+        completion(userInfo)
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.displayUserNameInCell = true
         RCIM.shared()?.globalMessageAvatarStyle = .USER_AVATAR_CYCLE
+        RCIM.shared()?.groupMemberDataSource = self
+        RCIM.shared()?.userInfoDataSource = self
+//        RCIM.shared()?.userInfoDataSource.getUserInfo(withUserId: "32772", completion: { (userInfo) in
+//            print(userInfo as Any)
+//        })
+//
+//        RCIM.shared()?.groupMemberDataSource.getAllMembers?(ofGroup: self.targetId, result: { (member) in
+//            print("\(String(describing: member))")
+//        })
         NotificationCenter.default.addObserver(self, selector: #selector(click), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(clickshow), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
@@ -24,9 +39,7 @@ class SmallTalkVC: RCConversationViewController {
         let allModels = GroupModel.objects(with: predicate)
         if allModels.count > 0 {
             let gModel:GroupModel = allModels.firstObject() as! GroupModel
-            if gModel != nil {
-                self.tabBarController?.title = gModel.group_name
-            }
+            self.tabBarController?.title = gModel.group_name
         }
         
     }
@@ -77,7 +90,7 @@ class SmallTalkVC: RCConversationViewController {
     
         
         if self.conversationType == .ConversationType_GROUP {
-            let predicate = NSPredicate.init(format: "groupid == %@", argumentArray: [self.targetId])
+            let predicate = NSPredicate.init(format: "groupid == %@", argumentArray: [self.targetId!])
             let groupUser =  GroupUserModel.objects(with: predicate)
             if groupUser.count < 1 {
                 return
@@ -100,4 +113,10 @@ class SmallTalkVC: RCConversationViewController {
         }
 
      }
+    
+    func getAllMembers(ofGroup groupId: String!, result resultBlock: (([String]?) -> Void)!) {
+        print("groupId = \(groupId ?? "")")
+        print(resultBlock as Any)
+        resultBlock(["dddd"])
+    }
 }

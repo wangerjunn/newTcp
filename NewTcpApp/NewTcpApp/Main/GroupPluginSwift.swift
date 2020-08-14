@@ -37,7 +37,7 @@ class GroupPluginSwift: NSObject {
             UserRequest.initData(params: ["app_token":token,"updatetime":"0"], hadToast: true, fail: { (error) in
 //                print(error)
             }, success: { (dic) in
-                print(dic)
+//                print(dic)
                 RCIM.shared().connect(withToken: sharePublicDataSingle.publicData.im_token, success: { (userId) in
                     print("登陆成功。当前登录的用户ID：\(String(describing: userId))")
                     next()

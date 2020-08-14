@@ -275,6 +275,39 @@ extension GroupSettingViewController : GroupSettingTableViewHeaderDelegate {
         
     }
     func addBtnDidClick() {
+        
+        var memberIdsArr = Array<String>()
+        for i in 0..<header.users.count {
+            let groupUserModel = header.users[i]
+            memberIdsArr.append(groupUserModel.userid)
+        }
+        let groupManage = GroupMemberManageVC()
+        groupManage.isAddMember = true
+        groupManage.groupid = "\((conversationModel?.targetId)!)"
+        groupManage.existMember = memberIdsArr
+        groupManage.resultBlock = { [weak self]  (resultArray) in
+            if let strongHSelf = self{
+                for userModel in resultArray
+                {
+                   let fModel = userModel as! FriendsModel
+                   let gModel = GroupUserModel()
+                   gModel.userid = fModel.userid
+                   gModel.avater = fModel.avater
+                   gModel.realname = fModel.realname
+                    
+                    strongHSelf.header.users.append(gModel)
+                }
+                strongHSelf.header.reloadData()
+                strongHSelf.headerView.frame = CGRect.init(x: 0, y: 0, width: SCREEN_WIDTH, height:
+                    strongHSelf.header.collectionViewLayout.collectionViewContentSize.height)
+                strongHSelf.tableView.reloadData()
+                
+            }
+        }
+        
+        self.navigationController?.pushViewController(groupManage, animated: true)
+        return
+        
         let addMemeberVc = GroupMemberVC()
         // 数组 header.users 包含群组成员model
 //        addMemeberVc.mem
@@ -300,6 +333,23 @@ extension GroupSettingViewController : GroupSettingTableViewHeaderDelegate {
 
     }
     func delBtnDidClick() {
+        
+        var memberIdsArr = Array<String>()
+        for i in 0..<header.users.count {
+            let groupUserModel = header.users[i]
+            memberIdsArr.append(groupUserModel.userid)
+        }
+        
+        let groupManage = GroupMemberManageVC()
+        groupManage.groupid = "\((conversationModel?.targetId)!)"
+        groupManage.existMember = memberIdsArr
+        groupManage.resultBlock = { [weak self]  (resultArray) in
+            
+        }
+        
+        self.navigationController?.pushViewController(groupManage, animated: true)
+        return
+        
         let addMemeberVc = GroupMemberVC()
         addMemeberVc.isAddMember = false
        

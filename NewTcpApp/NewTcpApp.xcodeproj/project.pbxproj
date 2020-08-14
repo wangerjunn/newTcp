@@ -106,6 +106,7 @@
 		FE8E06F824E22A8300A5C126 /* ShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8E06F724E22A8200A5C126 /* ShareView.m */; };
 		FE8E06FB24E22D8D00A5C126 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8E06FA24E22D8C00A5C126 /* UIView+Frame.m */; };
 		FE8E06FE24E230B500A5C126 /* UIView+UIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8E06FD24E230B500A5C126 /* UIView+UIViewController.m */; };
+		FE8E070424E54FEE00A5C126 /* GroupMemberManageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8E070324E54FEE00A5C126 /* GroupMemberManageVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -249,6 +250,7 @@
 		FE8E06FA24E22D8C00A5C126 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
 		FE8E06FC24E230B500A5C126 /* UIView+UIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+UIViewController.h"; sourceTree = "<group>"; };
 		FE8E06FD24E230B500A5C126 /* UIView+UIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+UIViewController.m"; sourceTree = "<group>"; };
+		FE8E070324E54FEE00A5C126 /* GroupMemberManageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberManageVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -396,6 +398,7 @@
 				FE41964E24C68E8E00CE17A7 /* GroupSettingViewController.swift */,
 				FE41964F24C68E8E00CE17A7 /* GroupSearchVC.swift */,
 				FE533A6124C962CB00B8C40C /* GroupCreateVC.swift */,
+				FE8E070324E54FEE00A5C126 /* GroupMemberManageVC.swift */,
 				FE41965024C68E8E00CE17A7 /* GroupEdit */,
 			);
 			path = GroupSetting;
@@ -924,6 +927,7 @@
 				FE41969F24C68EA000CE17A7 /* ApplyJoinGroupTextView.swift in Sources */,
 				FE4196D724C68EBA00CE17A7 /* FriendsModel.swift in Sources */,
 				FE533A6224C962CB00B8C40C /* GroupCreateVC.swift in Sources */,
+				FE8E070424E54FEE00A5C126 /* GroupMemberManageVC.swift in Sources */,
 				FE4196D424C68EBA00CE17A7 /* BaseRealMModel.swift in Sources */,
 				FE41967324C68E8F00CE17A7 /* GroupNoticeEditViewController.swift in Sources */,
 				FE8DA69724DA628B009ABC71 /* UserListModel.swift in Sources */,

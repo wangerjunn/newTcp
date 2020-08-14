@@ -100,10 +100,28 @@ class GroupIsOpenVC: BaseViewController {
                 return
             }
         }
+        
+//        RCIM.shared()?.refreshGroupInfoCache(<#T##groupInfo: RCGroup!##RCGroup!#>, withGroupId: <#T##String!#>)
         print("创建群组成功",success)
         
         if let gorupid = success["groupId"] {
+            let group:RCGroup = (RCIM.shared()?.getGroupInfoCache("\(gorupid)"))!
+            
+            print(group.groupName ?? "")
             //群组成员信息groupID修改值
+//            for i in 0..<(self?.userArray!.count)! {
+//                let friendModel = self!.userArray![i] as! FriendsModel
+//
+//                var groupUserModel = GroupUserModel.init()
+//                groupUserModel.groupid = gorupid as! String
+//                groupUserModel.userid = friendModel.userid
+//                groupUserModel.realname = friendModel.realname
+//                groupUserModel.avater = friendModel.avater
+//                groupUserModel.is_delete = "0"
+//            }
+            
+            
+                
             self?.getGroupInfo(groupid: "\(gorupid)")
         }
         
@@ -127,6 +145,7 @@ class GroupIsOpenVC: BaseViewController {
                     return
                 }
             }
+            
             
            let group = GroupModel.init(value: success)
             DataOperation.addData(rlmObject: group)

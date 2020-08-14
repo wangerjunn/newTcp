@@ -14,7 +14,8 @@
 #import "NewTcpApp-Swift.h"
 #import "LoadingAnimationView.h"
 #import "ShareView.h"
-@interface ViewController () <WKNavigationDelegate>
+
+@interface ViewController () <WKNavigationDelegate,WKScriptMessageHandler>
 {
     WKWebView *wkWebView;
     NSString *redirectUrl;
@@ -26,14 +27,9 @@
 
 @implementation ViewController
 
-- (void)shareToPlatform {
-    ShareView *shareView = [[ShareView alloc] initShareViewBySharePlaform:@[@1] viewTitle:@"分享测试啦" shareTitle:@"我是分享的标题啊" shareDesp:@"我是分享的描述啊" shareLogo:@"logo" shareUrl:@"https://www.baidu.com"];
-    [shareView show];
-}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"share" style:UIBarButtonItemStylePlain target:self action:@selector(shareToPlatform)];
     self.view.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view.
     
@@ -49,12 +45,11 @@
      config.preferences = preference;
          
         
-    //     //这个类主要用来做native与JavaScript的交互管理
-    //     WKUserContentController * wkUController = [[WKUserContentController alloc] init];
-    //     //注册一个name为jsToOcNoPrams的js方法
-    //     [wkUController addScriptMessageHandler:weakScriptMessageDelegate  name:@"jsToOcNoPrams"];
-    //     [wkUController addScriptMessageHandler:weakScriptMessageDelegate  name:@"jsToOcWithPrams"];
-    //    config.userContentController = wkUController;
+     //这个类主要用来做native与JavaScript的交互管理
+     WKUserContentController * wkUController = [[WKUserContentController alloc] init];
+     //注册一个name为jsToOcNoPrams的js方法
+     [wkUController addScriptMessageHandler:self  name:@"shareToPlatform"];
+     config.userContentController = wkUController;
         
     wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 20, kScreenWidth, kScreenHeight-20) configuration:config];
     wkWebView.navigationDelegate = self;
@@ -106,6 +101,12 @@
         NSLog(@"window.location.hostname = %@",handle);
     }];
     
+    // OC调用JS
+    NSString *textJS = [NSString stringWithFormat:@"share()"];
+    [webView evaluateJavaScript:textJS completionHandler:^(id _Nullable handle, NSError * _Nullable error) {
+        NSLog(@"handle = %@",handle);
+    }];
+  
     [loadingView dismiss];
 }
    
@@ -301,5 +302,14 @@
     
 }
 
+#pragma mark -- WKScriptMessageHandler
+- (void)userContentController:(nonnull WKUserContentController *)userContentController didReceiveScriptMessage:(nonnull WKScriptMessage *)message {
+    if ([message.name isEqualToString:@"shareToPlatform"]) {
+        if (message.body) {
+            NSLog(@"body = %@",message.body);
+        }
+        
+    }
+}
 
 @end
