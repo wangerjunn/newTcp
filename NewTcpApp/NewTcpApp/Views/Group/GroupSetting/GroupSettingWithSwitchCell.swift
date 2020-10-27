@@ -8,12 +8,12 @@
 
 import UIKit
 
-protocol GroupSettingWithSwitchCellDelegate {
-    func onClickSwitchButton(swich:UISwitch, title:String)
+@objc protocol GroupSettingWithSwitchCellDelegate {
+    func onClickSwitchButton(swich:UIButton, title:String)
 }
 class GroupSettingWithSwitchCell: UITableViewCell {
 
-    var delegate : GroupSettingWithSwitchCellDelegate?
+   weak var delegate : GroupSettingWithSwitchCellDelegate?
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -28,6 +28,7 @@ class GroupSettingWithSwitchCell: UITableViewCell {
         }
        
         swich.mas_makeConstraints { [unowned self](make) in
+            make!.size.equalTo()(CGSize.init(width: 42, height: 30))
             make!.right.equalTo()(-LEFT_PADDING_GS)
             make!.centerY.equalTo()(self)
         }
@@ -37,7 +38,7 @@ class GroupSettingWithSwitchCell: UITableViewCell {
     var model: Any? {
         didSet{
             titleLabel.text = (model as! Dictionary<String, Any>).first?.key
-            swich.isOn = String.changeToString(inValue: (model as! Dictionary<String, Any>).first?.value) == "1"
+            swich.isSelected = String.changeToString(inValue: (model as! Dictionary<String, Any>).first?.value) == "1"
         }
     }
     required init?(coder aDecoder: NSCoder) {
@@ -47,15 +48,18 @@ class GroupSettingWithSwitchCell: UITableViewCell {
     class func cell(withTableView tableView: UITableView) -> GroupSettingWithSwitchCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: String(describing: self)) as? GroupSettingWithSwitchCell
         if cell == nil {
-            cell = GroupSettingWithSwitchCell.init(style: .default, reuseIdentifier: String(describing: self))
+            cell = GroupSettingWithSwitchCell.init(style: .default, reuseIdentifier: "GroupSettingWithSwitchCell")
+//            cell = GroupSettingWithSwitchCell.init(style: .default, reuseIdentifier: String(describing: self))
             cell?.selectionStyle = .none
         }
         return cell!
     }
     
-    @objc func onClickSwitch(swich:UISwitch, title:String) {
-        delegate?.onClickSwitchButton(swich:swich, title: titleLabel.text!)
+    @objc func onClickSwitch(button:UIButton) {
+//        button.isSelected = !button.isSelected
+        delegate?.onClickSwitchButton(swich:button, title: titleLabel.text!)
     }
+   
     //MARK: - Getter and Setter
     //标题
     fileprivate lazy var titleLabel: UILabel = {
@@ -65,9 +69,12 @@ class GroupSettingWithSwitchCell: UITableViewCell {
         return titleLabel
     }()
     //开关
-    lazy var swich: UISwitch = {
-        var swich = UISwitch()
-        swich.addTarget(self, action: #selector(onClickSwitch(swich:title:)), for: .valueChanged)
+    lazy var swich: UIButton = {
+        var swich = UIButton()
+        swich.showsTouchWhenHighlighted = true
+        swich.setImage(UIImage.init(named: "switch_normal"), for: .normal)
+        swich.setImage(UIImage.init(named: "switch_select"), for: .selected)
+        swich.addTarget(self, action: #selector(onClickSwitch(button:)), for: .touchUpInside)
         return swich
     }()
 }

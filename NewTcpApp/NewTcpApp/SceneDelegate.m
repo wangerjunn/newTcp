@@ -9,6 +9,8 @@
 #import "SceneDelegate.h"
 #import "ViewController.h"
 #import "NewTcpApp-Swift.h"
+#import "WXApi.h"
+#import "ApplePayViewController.h"
 
 @interface SceneDelegate ()
 
@@ -26,7 +28,7 @@
       [self.window setWindowScene:windowScene];
       [self.window setBackgroundColor:[UIColor whiteColor]];
       [self.window setRootViewController:[ViewController new]];
-      
+//    [self.window setRootViewController:[ApplePayViewController new]];
       [self.window makeKeyAndVisible];
     
     
@@ -67,6 +69,15 @@
     // Use this method to save data, release shared resources, and store enough scene-specific state information
     // to restore the scene back to its current state.
 }
+
+//- (void)scene:(UIScene *)scene continueUserActivity:(NSUserActivity *)userActivity  API_AVAILABLE(ios(13.0)){
+//    [WXApi handleOpenUniversalLink:userActivity delegate:self];
+//}
+//
+//#pragma mark -- 微信回调
+//- (void)onResp:(BaseResp *)resp {
+//
+//}
 
 
 @end

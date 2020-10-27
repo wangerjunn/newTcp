@@ -12,7 +12,7 @@ class GroupSweepView: UIView {
 
   class func initWithImage(url:String)->(GroupSweepView)
     {
-       let view = GroupSweepView.init(frame: CGRect.init(x: 0, y: 64, width: kScreenW, height: kScreenH-64))
+       let view = GroupSweepView.init(frame: CGRect.init(x: 0, y: NAV_HEIGHT, width: kScreenW, height: MAIN_SCREEN_HEIGHT_PX-NAV_HEIGHT))
        view.backgroundColor = UIColor.white
        let lable = UILabel.init(frame: CGRect.init(x: 20, y: 20, width: kScreenW-40, height: 40))
         lable.text = "由于您所在的企业内没有其他成员，所以只能通过邀请好友扫描以下二维码加入该群组。"

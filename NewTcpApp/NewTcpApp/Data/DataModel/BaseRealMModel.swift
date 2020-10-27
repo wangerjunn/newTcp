@@ -9,9 +9,9 @@
 import UIKit
 import Realm
 class BaseRealMModel: RLMObject {
-    
+
     override func value(forUndefinedKey key: String) -> Any? {
-        print(key)
+        print("meiyou",key)
         return true
     }
 }

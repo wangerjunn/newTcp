@@ -10,6 +10,7 @@
 #define NewTcpApp_Bridging_Header_h
 
 #import <RongIMKit/RongIMKit.h>
+#import <RongCallKit/RongCallKit.h>
 #import "Masonry.h"
 #import "AFNetworking.h"
 #import <CommonCrypto/CommonDigest.h>
@@ -17,6 +18,12 @@
 #import <Realm/Realm.h>
 #import "UIImageView+WebCache.h"
 #import "ShareView.h"
+#import <SVProgressHUD/SVProgressHUD.h>
+#import "SDPhotoBrowser.h"
+#import "TZImagePickerController.h"
+#import "Toast.h"
+#import "MJRefresh.h"
+#import "SbcViewController.h"
 
 #endif
 /* NewTcpApp_Bridging_Header_h */

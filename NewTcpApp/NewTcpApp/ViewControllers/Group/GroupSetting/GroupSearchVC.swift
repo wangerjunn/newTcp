@@ -8,43 +8,121 @@
 
 import UIKit
 
+let pageNum = 20
 class GroupSearchVC: BaseViewController {
     var table:UITableView?
     var dataArray:Array<GroupModel>?
+    var allDataArray:Array<GroupModel>? //记录已经加载的数据
+    var searchView:UISearchBar?
+    var pageCount = 1 //当前页数
+    var allPageCount = 1 //记录已经加载的页数
+    var total : Int? = 0 //总数据个数
+    var first : Bool?
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "查找群组"
+        self.title = "搜索群组"
+        dataArray = Array()
+        allDataArray = Array()
+        first = true
+//        configData(keyword: "")
         configUI()
     }
+    
+    
+    
     fileprivate func configUI()
     {
-        dataArray = Array()
-        let searchView = UISearchBar.init(frame: CGRect.init(x: 0, y: 64, width: kScreenW, height: 50))
-        searchView.delegate = self
-        self.view.addSubview(searchView)
+        searchView = UISearchBar.init(frame: CGRect.init(x: 0, y: NAV_HEIGHT, width: kScreenW, height: 50))
+        searchView!.setBackgroundImage(UIImage.init(named: "backGray")!, for: .any, barMetrics: .default)
+        searchView!.delegate = self
+        searchView!.placeholder = "搜索"
+        searchView?.becomeFirstResponder()
+        self.view.addSubview(searchView!)
         
         
-        table = UITableView.init(frame: CGRect.init(x: 0, y: 64+50, width: kScreenW, height: kScreenH-64-50))
+        table = UITableView.init(frame: CGRect.init(x: 0, y: NAV_HEIGHT+50, width: kScreenW, height: MAIN_SCREEN_HEIGHT_PX-NAV_HEIGHT-50))
         self.view.addSubview(table!)
         table?.delegate = self;
         table?.dataSource = self;
         table?.tableFooterView = UIView.init()
-        self.automaticallyAdjustsScrollViewInsets = false
+       
     }
     
-//         self.configUIWith(fromCellName: "BaseTableCell", fromIsShowSearch: true,fromSearchType: false ,fromCellHeight: 50)
-//         configData()
-//        self.allDataArray = FriendsModel.allObjects()
-//        
-//        //
-//        self.setDataArray(dataArray: self.allDataArray!)
-        // Do any additional setup after loading the view.
-    
+    fileprivate func configData(keyword : String) {
+        
+        var params = Dictionary<String, Any>()
+        params["app_token"] = sharePublicDataSingle.token
+        if keyword.count > 0 {
+            params["keyword"] = keyword
+        }
+        params["is_join"] = 0 //未加入
+        params["is_open"] = 1 // 公开
+        params["offset"] = pageCount // 当前页
+        params["length"] = pageNum // 每页记录数
+        self.progressShow()
+        GroupRequest.search(params: params, hadToast: true, fail: {[weak self](error) in
+            if let strongSelf = self {
+                strongSelf.progressDismiss()
+            }
+        }, success: {[weak self] (sdic) in
+            if let strongSelf = self{
+                strongSelf.progressDismiss()
+                
+                DispatchQueue.main.async {
+                    var array : Array<Dictionary<String, Any>>! = []
+                    if sdic["list"] != nil{
+                        array = sdic["list"] as! Array<Dictionary<String, Any>>
+                    }
+                    if (strongSelf.first)!{
+                        strongSelf.first = false
+                        if array.isEmpty{
+                            //                    self?.progressDismissWith(str: "没有找到符合的群组")
+                            strongSelf.table?.reloadData()
+                            strongSelf.showRemind()
+                            return
+                        }
+                    }
+                    //普通带文字上拉加载的定义
+                    if strongSelf.table?.mj_footer == nil{
+                        strongSelf.table?.mj_footer? = MJRefreshAutoNormalFooter(refreshingTarget: strongSelf, refreshingAction: #selector(strongSelf.footerRefresh))
+                    }
+                    strongSelf.table?.mj_footer?.endRefreshing()
+                    if array.count == pageNum {
+                        strongSelf.table?.mj_footer?.isHidden = false
+                    }else if array.count < pageNum {
+                        strongSelf.table?.mj_footer?.isHidden = true
+                    }
+                    for i in 0..<array.count  {
+                        let model = GroupModel()
+                        let dic:Dictionary = array[i]
+                        model.setValuesForKeys(dic)
+                        strongSelf.dataArray?.append(model)
+                    }
+                    if keyword.count == 0{
+                        strongSelf.allDataArray = strongSelf.dataArray
+                        strongSelf.allPageCount = strongSelf.pageCount
+                        strongSelf.total = Int(String.changeToString(inValue: sdic["total"] as Any))
+                    }
+                    strongSelf.table?.reloadData()
+                    strongSelf.showRemind()
+                }
+            }
+            
+        })
+        
+    }
 
-//    func configData(){
-//    
-//        self.allDataArray = GroupModel.allObjects()
-//        self.setDataArray(dataArray: self.allDataArray!)
+    //上拉加载操作
+    @objc func footerRefresh(){
+
+        pageCount += 1
+        self.configData(keyword: (searchView?.text)!)
+//            table?.reloadData()
+//        }
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.searchView?.resignFirstResponder()
+    }
     
 
     override func didReceiveMemoryWarning() {
@@ -52,37 +130,30 @@ class GroupSearchVC: BaseViewController {
         // Dispose of any resources that can be recreated.
     }
     
-//    override func searchBarTextChangedWith(nowText: String) {
-//        
-//        if nowText.isEmpty {
-//            self.dataArray = self.allDataArray
-//        }
-//        else
-//        {
-//            
-//        let predicate = NSPredicate.init(format: "group_name Contains %@", argumentArray: ([nowText]))
-//        self.dataArray = self.dataArray?.objects(with: predicate)
-//        }
-//        
-//        self.table?.reloadData()
-//      }
-//    
-//    
-//    /// cell右边按钮点击事件
-//    ///
-//    /// - Parameter model: <#model description#>
-//    override func cellRightBtnClick(model: RLMObject) {
-//        
-//    }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    /// 提醒个数
+    func showRemind(){
+        
+        let fView = UIView.init(frame: CGRect(x: 0, y: 0, width: kScreenW, height: 50))
+        
+        let line = UIView.init(frame: CGRect(x: 0, y: 0, width: kScreenW, height: 1))
+        line.backgroundColor = UIColor.groupTableViewBackground
+        fView.addSubview(line)
+        
+        let numberLable = UILabel.init(frame: CGRect.init(x: 0, y: 10, width: kScreenW, height: 30))
+        numberLable.textAlignment = NSTextAlignment.center
+        numberLable.font = UIFont.systemFont(ofSize: 14)
+        
+        numberLable.text = "没有查找到相关的群组"
+        fView.addSubview(numberLable)
+        
+        if (self.dataArray?.count)! == 0 {
+            table?.tableFooterView = fView
+        }else{
+            table?.tableFooterView = UIView.init()
+        }
+        
     }
-    */
 
 }
 
@@ -90,9 +161,8 @@ class GroupSearchVC: BaseViewController {
 extension GroupSearchVC:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-            return 44
-        }
-    
+        return 75
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -100,7 +170,7 @@ extension GroupSearchVC:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return dataArray != nil ?Int((dataArray?.count)!): 0
+        return dataArray != nil ? (dataArray?.count)! : 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -108,71 +178,81 @@ extension GroupSearchVC:UITableViewDelegate,UITableViewDataSource{
         var cell:BaseTableCell? = tableView.dequeueReusableCell(withIdentifier: "cell") as! BaseTableCell?
         if cell == nil
         {
-                cell = Bundle.main.loadNibNamed("BaseTableCell", owner: self, options: nil)?.last as! UITableViewCell? as! BaseTableCell?
+            cell = Bundle.main.loadNibNamed("BaseTableCell", owner: self, options: nil)?.last as! UITableViewCell? as! BaseTableCell?
         }
         
-        if self.dataArray!.count > indexPath.row {
-            let model:RLMObject = self.dataArray![indexPath.row]
-            cell?.setValue(model, forKey: "model")
-            cell?.delegate = self
-        }
-        
+        let model:RLMObject = self.dataArray![indexPath.row]
+        let bCell = cell! as BaseTableCell
+        bCell.model = model
+//        cell?.setValue(model, forKey: "model")
+        cell?.delegate = self
         return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        
+        if (searchView?.isFirstResponder)! {
+            searchView?.resignFirstResponder()
+        }
         
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        view.endEditing(true)
+        if (searchView?.isFirstResponder)! {
+            searchView?.resignFirstResponder()
+        }
     }
+
     
 }
-
 
 extension GroupSearchVC:UISearchBarDelegate{
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-        view.endEditing(true)
-        var params = Dictionary<String, Any>()
-        params["app_token"] = sharePublicDataSingle.token
-        params["keyword"] = searchBar.text
-        
-        GroupRequest.search(params: params, hadToast: true, fail: { (e) in
-            
-        }, success: { (sdic) in
-           
-            if let code = sdic["code"] {
-                if "\(code)" != "1" {
-                    self.showAlert(content: sdic["msg"] as! String)
-                    return
-                }
-            }
-            
-           self.dataArray?.removeAll()
-           let array = sdic["list"] as! Array<Dictionary<String, Any>>
-            if array.isEmpty{
-            self.table?.reloadData()
-             return
-            }
-            for i in 0...array.count-1  {
-                let model = GroupModel()
-                let dic:Dictionary = array[i]
-               model.setValuesForKeys(dic)
-             self.dataArray?.append(model)
-           }
-       self.table?.reloadData()
-    })
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchView?.showsCancelButton = true
+
     }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchView?.showsCancelButton = false
+        searchView?.text = nil
+        searchBar.resignFirstResponder()
+        dataArray = allDataArray //点击取消按钮显示已经加载过的所有数据
+        pageCount = allPageCount
+        if self.table?.mj_footer != nil {
+            
+            if dataArray?.count == total {
+                self.table?.mj_footer?.isHidden = true
+            }else {
+                self.table?.mj_footer?.isHidden = false
+            }
+        }
+//        showRemind()
+        table?.reloadData()
+    }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+
+        searchBar.resignFirstResponder()
+        
+        pageCount = 1
+        dataArray?.removeAll()
+        configData(keyword: searchBar.text!)
+    }
+  
 }
+
+
+
+
+
 
 extension GroupSearchVC:BaseCellDelegate{
    
+    
+ 
+    
     func cellRightBtnClick(model: RLMObject) {
+        
+        
         let applyJoinGroupVc = ApplyJoinGroupViewController()
         applyJoinGroupVc.groupModel = model as? GroupModel
         self.navigationController?.pushViewController(applyJoinGroupVc, animated: true)

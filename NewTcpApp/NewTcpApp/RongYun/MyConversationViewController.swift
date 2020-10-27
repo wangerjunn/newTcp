@@ -21,26 +21,25 @@ class MyConversationViewController: RCConversationViewController {
         self.conversationMessageCollectionView .register(MyVoiceCell.self, forCellWithReuseIdentifier: "voice")
 //        self.chatSessionInputBarControl.delegate = self
         
-        // 监听键盘弹出通知
-            NotificationCenter.default.addObserver(self, selector: #selector(clickshow), name:UIResponder.keyboardWillShowNotification,object: nil)
-        // 监听键盘隐藏通知
-            NotificationCenter.default.addObserver(self,selector: #selector(click),name: UIResponder.keyboardWillHideNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(click), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(clickshow), name: UIResponder.keyboardDidShowNotification, object: nil)
     }
     
    @objc func click(notification: NSNotification)
    {
-    if self.chatSessionInputBarControl.frame.origin.y>kScreenH-49{
-      self.view.frame = CGRect.init(x: 0, y: 0, width:kScreenW, height: kScreenH)
+    if self.chatSessionInputBarControl.frame.origin.y>MAIN_SCREEN_HEIGHT_PX{
+      self.view.frame = CGRect.init(x: 0, y: 0, width:kScreenW, height: MAIN_SCREEN_HEIGHT_PX)
     }
     else
     {
-     self.view.frame = CGRect.init(x: 0, y: -49, width:kScreenW, height: kScreenH)
+     self.view.frame = CGRect.init(x: 0, y: -49, width:kScreenW, height: MAIN_SCREEN_HEIGHT_PX)
     }
    }
     
     @objc func clickshow(notification: NSNotification)
     {
-        self.view.frame = CGRect.init(x: 0, y: 0, width:kScreenW, height: kScreenH)
+        self.view.frame = CGRect.init(x: 0, y: 0, width:kScreenW, height: MAIN_SCREEN_HEIGHT_PX)
     }
     
 
@@ -54,9 +53,9 @@ class MyConversationViewController: RCConversationViewController {
 //        
 //    }
     override func viewDidAppear(_ animated: Bool) {
-        self.view.frame = CGRect.init(x: 0, y: -49, width:kScreenW, height: kScreenH)
+        self.view.frame = CGRect.init(x: 0, y: -49, width:kScreenW, height: MAIN_SCREEN_HEIGHT_PX)
         self.view.backgroundColor = UIColor.white
-        self.conversationMessageCollectionView.frame = CGRect.init(x: 0, y: 49, width: kScreenW, height: kScreenH-64-49-50)
+        self.conversationMessageCollectionView.frame = CGRect.init(x: 0, y: 49, width: kScreenW, height: MAIN_SCREEN_HEIGHT_PX-NAV_HEIGHT-49-50)
         self.scrollToBottom(animated: false)
 //        make!.top.mas_equalTo()(view)
 //        make!.bottom.mas_equalTo()(view)!.mas_offset()(-50)
@@ -70,7 +69,7 @@ class MyConversationViewController: RCConversationViewController {
     }
 //    override func viewWillAppear(_ animated: Bool) {
 //        super.viewWillAppear(true)
-//        self.conversationMessageCollectionView .frame = CGRect.init(x: 0, y: 64, width:kScreenW, height: kScreenH-50-49-64)
+//        self.conversationMessageCollectionView .frame = CGRect.init(x: 0, y: NAV_HEIGHT, width:kScreenW, height: kScreenH-50-49-NAV_HEIGHT)
 //        self.scrollToBottom(animated: false)
 //        self.chatSessionInputBarControl.frame = CGRect.init(x: 0, y: kScreenH-50-49, width:kScreenW, height: 50)
 //    }

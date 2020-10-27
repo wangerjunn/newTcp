@@ -31,7 +31,7 @@ extension Date {
         let currentD = dateFormatter.date(from: currentResult)
         let targetD = dateFormatter.date(from: targetResult)
 
-        return currentD?.timeIntervalSince(targetD!) == 24 * 60 * 60
+        return (currentD?.timeIntervalSince(targetD!))! <= 24 * 60 * 60
     }
     
     // 判断是否是一周内
@@ -45,7 +45,7 @@ extension Date {
         let currentD = dateFormatter.date(from: currentResult)
         let targetD = dateFormatter.date(from: targetResult)
         
-        return currentD?.timeIntervalSince(targetD!) == 7 * 24 * 60 * 60
+        return (currentD?.timeIntervalSince(targetD!))! <= 7 * 24 * 60 * 60
     }
 
     // 日期格式转换yy/MM/dd

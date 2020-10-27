@@ -9,21 +9,34 @@
 import UIKit
 
 class BaseViewController: UIViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        //修改导航栏背景色
-        self.navigationController?.navigationBar.barTintColor = UIColor.hexString(hexString: "333333")
-        //修改导航栏按钮颜色
-        self.navigationController?.navigationBar.tintColor = UIColor.white
-        //修改导航栏文字颜色
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        // Do any additional setup after loading the view.
+         self.configBackItem()
+        self.automaticallyAdjustsScrollViewInsets = false
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+
+    func addAlertView(title:String, message:String, actionTitles:Array<String>,okAction: ((UIAlertAction) -> Void)?, cancleAction: ((UIAlertAction) -> Void)?) {
+        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
+        for (index,actionTitle) in actionTitles.enumerated() {
+            if index == 0 {
+                alertController.addAction(UIAlertAction.init(title: actionTitle, style: .default, handler: { (action) in
+                    okAction!(action)
+                }))
+            }
+            if index > 0 && index == actionTitles.count - 1 {
+                alertController.addAction(UIAlertAction.init(title: actionTitle, style: .cancel, handler: { (action) in
+                    cancleAction!(action)
+                }))
+            }
+        }
+        self.present(alertController, animated: true, completion: nil)
     }
     
     //通过类名返回一个AnyClass
@@ -39,15 +52,5 @@ class BaseViewController: UIViewController {
         bundlePath = bundlePath.components(separatedBy: ".").first!
         return bundlePath
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

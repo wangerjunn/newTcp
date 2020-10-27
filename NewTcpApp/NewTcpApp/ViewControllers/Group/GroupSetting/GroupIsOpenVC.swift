@@ -9,6 +9,7 @@
 import UIKit
 
 class GroupIsOpenVC: BaseViewController {
+
     
     var userArray:Array<RLMObject>?
     var groupName:String?
@@ -18,10 +19,10 @@ class GroupIsOpenVC: BaseViewController {
         leftImage.image = UIImage.init(named: "isOpen_normal")
         
         if sender.tag == 101 {
-            isOpen = true
+            isOpen = false
             rightImage.image = UIImage.init(named: "isClose_select")
         }else {
-            isOpen = false
+            isOpen = true
             leftImage.image = UIImage.init(named: "isOpen_select")
         }
     }
@@ -79,7 +80,7 @@ class GroupIsOpenVC: BaseViewController {
         
 
 
-        let idStr = (NSArray.init(array: userArray!).value(forKeyPath: "userid") as! NSArray).componentsJoined(by: ",")
+        let idStr = (NSArray.init(array: userArray!).value(forKeyPath: "im_userid") as! NSArray).componentsJoined(by: ",")
 
 
         params["userid_str"] = idStr
@@ -90,39 +91,30 @@ class GroupIsOpenVC: BaseViewController {
            params["is_open"] = "0"
         }
         
-        
+        SVProgressHUD.show()
        GroupRequest.creat(params: params, hadToast: true, fail: { (error)  in
 
        }, success: {[weak self] (success)  in
         if let code = success["code"] {
             if "\(code)" != "1" {
-                self?.showAlert(content: success["msg"] as! String)
+                SVProgressHUD.showError(withStatus: success["msg"] as? String)
                 return
             }
+            
+           
         }
         
-//        RCIM.shared()?.refreshGroupInfoCache(<#T##groupInfo: RCGroup!##RCGroup!#>, withGroupId: <#T##String!#>)
         print("创建群组成功",success)
         
         if let gorupid = success["groupId"] {
-            let group:RCGroup = (RCIM.shared()?.getGroupInfoCache("\(gorupid)"))!
             
-            print(group.groupName ?? "")
-            //群组成员信息groupID修改值
-//            for i in 0..<(self?.userArray!.count)! {
-//                let friendModel = self!.userArray![i] as! FriendsModel
+            
+//            let groupidStr = "\(gorupid)"
+//            let group:RCGroup = (RCIM.shared()?.getGroupInfoCache(groupidStr))!
 //
-//                var groupUserModel = GroupUserModel.init()
-//                groupUserModel.groupid = gorupid as! String
-//                groupUserModel.userid = friendModel.userid
-//                groupUserModel.realname = friendModel.realname
-//                groupUserModel.avater = friendModel.avater
-//                groupUserModel.is_delete = "0"
-//            }
+//            print(group.groupName ?? "")
             
-            
-                
-            self?.getGroupInfo(groupid: "\(gorupid)")
+            self?.sygnGruopInfo()
         }
         
        })
@@ -130,27 +122,20 @@ class GroupIsOpenVC: BaseViewController {
         
     }
     
-    //获取群组信息，写入本地数据
-    func getGroupInfo(groupid:String) {
+    func sygnGruopInfo() {
         
-        var params = Dictionary<String, Any>()
-        params["app_token"] = sharePublicDataSingle.token
-        params["groupid"] = groupid
-        GroupRequest.info(params: params, hadToast: true, fail: { (Error) in
-            
-        }) { [weak self] (success) in
-            if let code = success["code"] {
-                if "\(code)" != "1" {
-                    self?.showAlert(content: success["msg"] as! String)
-                    return
-                }
-            }
-            
-            
-           let group = GroupModel.init(value: success)
-            DataOperation.addData(rlmObject: group)
-            self?.navigationController?.popToRootViewController(animated: true)
+        let username:String = sharePublicDataSingle.publicData.userid + sharePublicDataSingle.publicData.corpid
+        var time:String? = UserDefaults.standard.object(forKey: username) as! String?
+        if time == nil{
+            time = "0"
         }
+        UserRequest.initData(params: ["app_token":sharePublicDataSingle.token,"updatetime":time!], hadToast: true, fail: { (error) in
+            SVProgressHUD.dismiss()
+        }, success: { (dic) in
+            print(dic)
+            SVProgressHUD.dismiss()
+            self.navigationController?.popToRootViewController(animated: true)
+        })
     }
     
     override func didReceiveMemoryWarning() {

@@ -47,6 +47,10 @@ FOUNDATION_EXPORT const unsigned char RongIMKitVersionString[];
 #import <RongIMKit/RCTipMessageCell.h>
 #import <RongIMKit/RCUnknownMessageCell.h>
 #import <RongIMKit/RCVoiceMessageCell.h>
+#import <RongIMKit/RCReferenceMessageCell.h>
+#import <RongIMKit/RCReferencedContentView.h>
+#import <RongIMKit/RCReferencingView.h>
+#import <RongIMKit/RCHQVoiceMessageCell.h>
 
 /// 工具类
 #import <RongIMKit/RCKitUtility.h>

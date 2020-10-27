@@ -7,7 +7,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
          <BreakpointContent
-            uuid = "7D9E1542-C048-485D-8A38-38EA4D983DE9"
+            uuid = "29783679-B92C-468C-B58D-BB0DCB9B1251"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -19,15 +19,63 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "29D22815-3A48-4C8E-82F8-6D817AE23CA8"
+            uuid = "9A4A5A32-6B3E-489B-A715-D28AF9605588"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/Data/DataModel/GroupModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "12"
+            endingLineNumber = "12"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "37CBA623-C8AA-4DBA-B1CE-5F90BDC32526"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/Data/DataModel/BaseRealMModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "14"
+            endingLineNumber = "14"
+            landmarkName = "value(forUndefinedKey:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "58DE7A80-4817-45F9-BF5F-B9FFFF553486"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupMemberVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "392"
+            endingLineNumber = "392"
+            landmarkName = "rightClick()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7222C35D-4102-4CBC-B970-D5F2ABF81A72"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewTcpApp/Data/DataOperation/DataOperation.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
             landmarkName = "temp(dic:)"
             landmarkType = "9">
          </BreakpointContent>
@@ -35,191 +83,95 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "DD90A25F-60AE-4DE1-B13E-A04BF6D532C1"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "268"
-            endingLineNumber = "268"
-            landmarkName = "rcConversationListTableView(_:cellForRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "45DC3A99-3773-47DC-BB60-6AF3879DA3F4"
+            uuid = "52B136B5-F5AB-4F71-A9A0-4194C346845D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/Views/Public/ShareView.m"
+            filePath = "NewTcpApp/Data/DataOperation/DataOperation.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "321"
-            endingLineNumber = "321"
-            landmarkName = "-shareScene:"
-            landmarkType = "7">
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "temp(dic:)"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "59EF78E6-39FD-450D-9494-87609A2C1B3E"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupSettingViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
-            landmarkName = "exitBtnClick()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "C094A522-1F49-4C5D-BA28-1BF09218CAD9"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
-            landmarkName = "willReloadTableData(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4E5BEF51-E8B0-452D-83E4-B17C83BF989C"
+            uuid = "5756DDB8-3CD5-4C2C-BD82-679FCC07D114"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewTcpApp/ViewControllers/Group/GroupListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "278"
-            endingLineNumber = "278"
-            landmarkName = "didReceiveMessageNotification(_:)"
+            startingLineNumber = "244"
+            endingLineNumber = "244"
+            landmarkName = "emptyBtnClick(button:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "5756DDB8-3CD5-4C2C-BD82-679FCC07D114 - 68979174bf93c3d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x9500;&#x552e;&#x5927;&#x5496;.GroupListViewController.emptyBtnClick(button: __C.UIButton) -&gt; ()"
+                  moduleName = "&#x9500;&#x552e;&#x5927;&#x5496;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xslp/Downloads/newTcp%E7%9A%84%E5%89%AF%E6%9C%AC%202-2/NewTcpApp/NewTcpApp/ViewControllers/Group/GroupListViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "244"
+                  endingLineNumber = "244"
+                  offsetFromSymbolStart = "92">
+               </Location>
+               <Location
+                  uuid = "5756DDB8-3CD5-4C2C-BD82-679FCC07D114 - 3b0bb2270c585c5f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; () in &#x9500;&#x552e;&#x5927;&#x5496;.GroupListViewController.emptyBtnClick(button: __C.UIButton) -&gt; ()"
+                  moduleName = "&#x9500;&#x552e;&#x5927;&#x5496;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xslp/Downloads/newTcp%E7%9A%84%E5%89%AF%E6%9C%AC%202-2/NewTcpApp/NewTcpApp/ViewControllers/Group/GroupListViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "244"
+                  endingLineNumber = "244"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "E357536A-93DD-4C1C-A10F-B1CD090E6CE9"
+            uuid = "869D41A1-15E1-4B14-9D26-C9D85C1C1975"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupSettingViewController.swift"
+            filePath = "NewTcpApp/NetWork/HttpService/GroupRequest.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
-            landmarkName = "exitBtnClick()"
+            startingLineNumber = "508"
+            endingLineNumber = "508"
+            landmarkName = "uploadImage(image:params:hadToast:fail:success:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "496C4C2C-CA9D-41C3-A552-16B9A2302109"
+            uuid = "BE642A61-A99D-41D4-B489-044C2E84BE4C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupCreateVC.swift"
+            filePath = "NewTcpApp/ViewControllers/Group/SmallTalkVC/SingleChatVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "rightBtnClick(button:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "81AC8A0B-E708-477D-AFF6-C478746321E3"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupCreateVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "rightBtnClick(button:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B1D5C551-7661-484D-9978-2172BCE8CFEA"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupIsOpenVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "rightBtnClick(button:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5B76AF01-D966-4DF4-ACD7-84D0A3079EEB"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/SmallTalkVC/SmallTalkVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "getAllMembers(ofGroup:result:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "FFAA5152-870C-4404-83C0-A06A48CE2A6A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/SmallTalkVC/SmallTalkVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "13"
-            endingLineNumber = "13"
-            landmarkName = "getUserInfo(withUserId:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6C571E33-D65C-40ED-9C89-599870F9B6C2"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/SmallTalkVC/SmallTalkVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
+            startingLineNumber = "14"
+            endingLineNumber = "14"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -227,15 +179,47 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "846E0D6E-D043-4190-989D-3BC057CE0D1E"
-            shouldBeEnabled = "No"
+            uuid = "824B8ACB-B984-49E5-8D53-229BEBECC567"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/ViewControllers/Group/ThemeListVCViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "559"
+            endingLineNumber = "559"
+            landmarkName = "creatOrEditSubject(subGroupid:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EB6C192C-69FF-4801-9CF2-8BDE972C1F6F"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewTcpApp/ViewControllers/Group/SmallTalkVC/SmallTalkVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
+            startingLineNumber = "1859"
+            endingLineNumber = "1859"
+            landmarkName = "pluginBoardView(_:clickedItemWithTag:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "530793AF-8B03-4EA4-A172-18D9007D7C44"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/ViewControllers/Group/SmallTalkVC/CallVideoMultiCallViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -243,225 +227,401 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A1B9B522-9955-48BC-B7D1-8E0DC4EDD5B8"
+            uuid = "EAD30E30-EAE3-45F6-B9B6-4CFC41F218ED"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/ViewControllers/Group/SmallTalkVC/CallVideoMultiCallViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "inviteUserButtonClicked()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EAD30E30-EAE3-45F6-B9B6-4CFC41F218ED - b09aca16da3e9a5b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x9500;&#x552e;&#x5927;&#x5496;.CallVideoMultiCallViewController.inviteUserButtonClicked() -&gt; ()"
+                  moduleName = "&#x9500;&#x552e;&#x5927;&#x5496;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xslp/Downloads/newTcp%E7%9A%84%E5%89%AF%E6%9C%AC%202-2/NewTcpApp/NewTcpApp/ViewControllers/Group/SmallTalkVC/CallVideoMultiCallViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "116">
+               </Location>
+               <Location
+                  uuid = "EAD30E30-EAE3-45F6-B9B6-4CFC41F218ED - b3c2dbde35f560c9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;Any&gt;&gt;) -&gt; () in &#x9500;&#x552e;&#x5927;&#x5496;.CallVideoMultiCallViewController.inviteUserButtonClicked() -&gt; ()"
+                  moduleName = "&#x9500;&#x552e;&#x5927;&#x5496;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xslp/Downloads/newTcp%E7%9A%84%E5%89%AF%E6%9C%AC%202-2/NewTcpApp/NewTcpApp/ViewControllers/Group/SmallTalkVC/CallVideoMultiCallViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6BD563D0-FC4D-40A6-96E7-A300BF8A06F6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupMemberManageVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
+            landmarkName = "loadData()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ADB2E56D-FA3A-40C3-901C-EFF6519DA7D3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/ViewControllers/Group/ThemeListVCViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AEF7C5E0-277A-4A74-AA0D-CDFBEB913DD3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/ViewControllers/Group/Theme/ThemeListVCViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "683"
+            endingLineNumber = "683"
+            landmarkName = "joinGroupSubject(model:joinSuccess:joinFail:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2672DF1C-4957-4165-B4C9-975AE05E7C58"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/ViewControllers/Group/Theme/ThemeListVCViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "316"
+            endingLineNumber = "316"
+            landmarkName = "headerRefresh()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5220A551-BB23-4A47-9D32-31878BA6FAB8"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupSettingViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "311"
-            endingLineNumber = "311"
-            landmarkName = "addBtnDidClick()"
+            startingLineNumber = "462"
+            endingLineNumber = "462"
+            landmarkName = "onClickSwitchButton(swich:title:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "248323CC-BED6-4D72-88C9-2856C570EF09"
+            uuid = "1D4602B4-1CF4-41B2-84B0-9E11CB408F3C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupSettingViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "356"
-            endingLineNumber = "356"
-            landmarkName = "delBtnDidClick()"
+            startingLineNumber = "446"
+            endingLineNumber = "446"
+            landmarkName = "onClickSwitchButton(swich:title:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "1D4602B4-1CF4-41B2-84B0-9E11CB408F3C - 5854d5ab8704af88"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x9500;&#x552e;&#x5927;&#x5496;.GroupSettingViewController.onClickSwitchButton(swich: __C.UIButton, title: Swift.String) -&gt; ()"
+                  moduleName = "&#x9500;&#x552e;&#x5927;&#x5496;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xslp/Downloads/newTcp%E7%9A%84%E5%89%AF%E6%9C%AC%202-2/NewTcpApp/NewTcpApp/ViewControllers/Group/GroupSetting/GroupSettingViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "446"
+                  endingLineNumber = "446"
+                  offsetFromSymbolStart = "340">
+               </Location>
+               <Location
+                  uuid = "1D4602B4-1CF4-41B2-84B0-9E11CB408F3C - 4c60b0124dfb551b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; () in &#x9500;&#x552e;&#x5927;&#x5496;.GroupSettingViewController.onClickSwitchButton(swich: __C.UIButton, title: Swift.String) -&gt; ()"
+                  moduleName = "&#x9500;&#x552e;&#x5927;&#x5496;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xslp/Downloads/newTcp%E7%9A%84%E5%89%AF%E6%9C%AC%202-2/NewTcpApp/NewTcpApp/ViewControllers/Group/GroupSetting/GroupSettingViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "446"
+                  endingLineNumber = "446"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1847276F-279A-40A0-A252-FB6CC7CD366B"
+            uuid = "B7E03013-842D-4021-80E9-10F84550EAA6"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupSettingViewController.swift"
+            filePath = "NewTcpApp/NetWork/HttpService/GroupRequest.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "363"
-            endingLineNumber = "363"
-            landmarkName = "delBtnDidClick()"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "setOpen(params:hadToast:fail:success:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "71FAE655-B253-4B15-A92B-34E8B1371480"
+            uuid = "407FEA98-6C6C-4275-9AFE-C62802302618"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupSettingViewController.swift"
+            filePath = "NewTcpApp/ViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "385"
-            endingLineNumber = "385"
-            landmarkName = "delBtnDidClick()"
+            startingLineNumber = "489"
+            endingLineNumber = "489"
+            landmarkName = "-initRCIM"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "BD0E8420-BC15-4301-9FF7-95E628715798"
+            uuid = "3A24C2A8-DC01-4C2C-AAE8-8021CF62E725"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupIsOpenVC.swift"
+            filePath = "NewTcpApp/SceneDelegate.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
-            landmarkName = "rightBtnClick(button:)"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "-scene:willConnectToSession:options:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "543F6089-7C93-4F98-BEF8-FEF869331256"
+            uuid = "4EC6C11F-40F0-4B4D-BAF1-F2DCC882BB9F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupMemberVC.swift"
+            filePath = "NewTcpApp/ApplyPayViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
-            landmarkName = "rightClick()"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
+            landmarkName = "-completeTransaction:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1337DEFA-6273-4FC3-9FA9-9CCF97EF9139"
+            uuid = "4ACE1635-4E9B-4E7C-A3F5-BECEA9CD13EB"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupMemberVC.swift"
+            filePath = "NewTcpApp/ApplyPayViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
+            landmarkName = "-paymentQueue:updatedTransactions:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CBB03C5E-69AE-424F-B5C2-4FE31A9E6262"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/ApplyPayViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "-productsRequest:didReceiveResponse:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AF7D0C9D-942E-48F1-AA0B-127DFF6CF9B9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/ApplyPayViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "-applePayAction"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "14744B30-1989-4750-A4BB-72B672A7A287"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/ApplyPayViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
+            landmarkName = "-request:didFailWithError:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AFCA2C39-810A-4722-B6E2-B3E7678D84C8"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/ApplyPayViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
+            landmarkName = "-requestDidFinish:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "03873171-12F3-4FD9-AB4F-7E96AB6E7AE1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewTcpApp/AppDelegate.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "218"
             endingLineNumber = "218"
-            landmarkName = "rightClick()"
+            landmarkName = "-remoteConfigActivated:error:userInfo:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6F2BEA8F-8628-4BE9-89E0-B50DD6695513"
+            uuid = "4D620AAD-4E22-4768-ACA2-0A22FB1B3FF5"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupSettingViewController.swift"
+            filePath = "NewTcpApp/AppDelegate.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "317"
-            endingLineNumber = "317"
-            landmarkName = "addBtnDidClick()"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "-configUMRemoteConfig"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "7F01DD91-0BC3-4006-BDD9-F0F3EA7EAD6E"
+            uuid = "05727B17-4EC0-48DD-B16B-27343632C576"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupMemberManageVC.swift"
+            filePath = "NewTcpApp/AppDelegate.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "249"
-            endingLineNumber = "249"
-            landmarkName = "addGroupMember()"
+            startingLineNumber = "212"
+            endingLineNumber = "212"
+            landmarkName = "-remoteConfigActivated:error:userInfo:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "37027470-2CC8-482C-BB9F-1A6B39A2B430"
+            uuid = "A87E499C-2BBA-49A2-9A12-1B9442569FF0"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupMemberManageVC.swift"
+            filePath = "NewTcpApp/ViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "217"
-            endingLineNumber = "217"
-            landmarkName = "deleteGroupMember()"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "-getAppOnlineVersion"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "07281324-2124-4003-8396-E599FE72E086"
+            uuid = "A0FA6C80-1AFE-4992-8CAD-0D9A8EC2B0F6"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupSettingViewController.swift"
+            filePath = "NewTcpApp/ViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
-            landmarkName = "addBtnDidClick()"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "-getAppOnlineVersion"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "2A3D17FD-96EB-4BD7-BA71-064AE074DA2F"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NewTcpApp/ViewControllers/Group/GroupSetting/GroupIsOpenVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
-            landmarkName = "rightBtnClick(button:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "2A3D17FD-96EB-4BD7-BA71-064AE074DA2F - 2328605fcd1975be"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; () in &#x9500;&#x552e;&#x5927;&#x5496;.GroupIsOpenVC.rightBtnClick(button: __C.UIButton) -&gt; ()"
-                  moduleName = "&#x9500;&#x552e;&#x5927;&#x5496;"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xslp/Documents/newTcp/NewTcpApp/NewTcpApp/ViewControllers/Group/GroupSetting/GroupIsOpenVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "108"
-                  endingLineNumber = "108"
-                  offsetFromSymbolStart = "1536">
-               </Location>
-               <Location
-                  uuid = "2A3D17FD-96EB-4BD7-BA71-064AE074DA2F - 2328605fcd1975be"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; () in &#x9500;&#x552e;&#x5927;&#x5496;.GroupIsOpenVC.rightBtnClick(button: __C.UIButton) -&gt; ()"
-                  moduleName = "&#x9500;&#x552e;&#x5927;&#x5496;"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xslp/Documents/newTcp/NewTcpApp/NewTcpApp/ViewControllers/Group/GroupSetting/GroupIsOpenVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "108"
-                  endingLineNumber = "108"
-                  offsetFromSymbolStart = "1600">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

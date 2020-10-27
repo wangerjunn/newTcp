@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol GroupSettingTableViewHeaderDelegate {
+@objc protocol GroupSettingTableViewHeaderDelegate {
     //点击成员头像
     func userItemDidClick(userId:String)
     //点击添加按钮
@@ -21,7 +21,7 @@ class GroupSettingTableViewHeader: UICollectionView {
     var users : Array<GroupUserModel> = Array()
     var isAllowedInviteMember : Bool!
     var isAllowedDeleteMember : Bool!
-    var myDelegate : GroupSettingTableViewHeaderDelegate?
+  weak var myDelegate : GroupSettingTableViewHeaderDelegate?
     
     convenience init() {
         let flowlayout = UICollectionViewFlowLayout.init()
@@ -34,6 +34,7 @@ class GroupSettingTableViewHeader: UICollectionView {
         self.register(GroupSettingTableViewHeaderItem.self, forCellWithReuseIdentifier: "GroupSettingTableViewHeaderItem")
         
         isAllowedInviteMember = true
+        isAllowedDeleteMember = false
     }
 
 }
@@ -41,13 +42,13 @@ class GroupSettingTableViewHeader: UICollectionView {
 extension GroupSettingTableViewHeader: UICollectionViewDelegate, UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     //MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize.init(width: (SCREEN_WIDTH - 100) / 4, height: (SCREEN_WIDTH - 100) / 4 + 25)
+        return CGSize.init(width: (SCREEN_WIDTH - (SCREEN_WIDTH < 375 ? 100 : kReal(value: 100))) / 4, height: (SCREEN_WIDTH - (SCREEN_WIDTH < 375 ? 100 : kReal(value: 100))) / 4 + 25)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         let flowLayout : UICollectionViewFlowLayout = collectionViewLayout as! UICollectionViewFlowLayout
         flowLayout.minimumLineSpacing = 15
         flowLayout.minimumInteritemSpacing = 20
-        return UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
+        return UIEdgeInsets(top: 15, left: SCREEN_WIDTH < 375 ? 20 : kReal(value: 20), bottom: 15, right: SCREEN_WIDTH < 375 ? 20 : kReal(value: 20))
     }
     //MARK: - UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -68,15 +69,17 @@ extension GroupSettingTableViewHeader: UICollectionViewDelegate, UICollectionVie
             cell.model = users[indexPath.row]
             
             cell.avatarImgV.sd_setImage(with: NSURL.init(string: (cell.model?.avater)!) as URL?, placeholderImage: UIImage.init(named: "mine_avatar"))
+            cell.avatarImgV.layer.borderWidth = 0.5
         }else if users.count >= indexPath.row {
             //添加
             cell.model = nil
             cell.avatarImgV.image = UIImage.init(named: "addMember_normal")
-            
+            cell.avatarImgV.layer.borderWidth = 0.0
         }else{
             //删除
             cell.model = nil
             cell.avatarImgV.image = UIImage.init(named: "subtractMember_normal")
+            cell.avatarImgV.layer.borderWidth = 0.0
         }
         return cell
     }
@@ -87,7 +90,8 @@ extension GroupSettingTableViewHeader: UICollectionViewDelegate, UICollectionVie
         }else if users.count == indexPath.row{
             myDelegate?.addBtnDidClick()
         }else{
-            myDelegate?.userItemDidClick(userId: "")
+            let model = users[indexPath.row]
+            myDelegate?.userItemDidClick(userId: model.userid)
         }
         
     }

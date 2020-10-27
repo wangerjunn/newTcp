@@ -34,17 +34,25 @@ extension String {
                return NSMakeRange(utf16view.distance(from: utf16view.startIndex, to: from), utf16view.distance(from: from, to: to))
             }
             return NSRange.init()
-        //        let from = range.lowerBound.samePosition(in: utf16)
-        //        let to = range.upperBound.samePosition(in: utf16)
-        //
-        //        return NSRange(location: utf16.distance(from: utf16.startIndex, to: from!),
-        //                       length: utf16.distance(from: from!, to: to!))
     }
     
     func getTextHeight(font:UIFont,width:CGFloat) -> CGFloat {
         
         let constraintRect = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
+        return boundingBox.height
+    }
+    func getTextWidth(font:UIFont,height:CGFloat) -> CGFloat {
+        
+        let constraintRect = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
+        let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
+        return boundingBox.width
+    }
+    func getSpaceLabelHeight(font:UIFont,width:CGFloat) -> CGFloat {
+        let paragraphStyle = NSMutableParagraphStyle.init()
+        paragraphStyle.lineSpacing = textLineSpace
+        let constraintRect = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.paragraphStyle: paragraphStyle], context: nil)
         return boundingBox.height
     }
     
@@ -59,6 +67,42 @@ extension String {
         }
         
         return str
+    }
+    
+    
+    
+    static func noNilStr(str:Any?)->(String){
+        
+        if str is NSNull {
+            return ""
+        }
+        
+        if str is NSNumber {
+            
+            return "\(str!)"
+        }
+        
+        if str is String {
+            if String(describing: str!) == "(null)"{
+                return ""
+            }
+            return String(describing: str!)
+        }
+        
+        if str == nil {
+            return ""
+        }
+        
+        return String(describing: str!)
+    }
+    
+    func stringValueDic(_ str: String) -> [String : Any]?{
+        let data = str.data(using: String.Encoding.utf8)
+        if let dict = try? JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? [String : Any] {
+            return dict
+        }
+        
+        return nil
     }
     
 }

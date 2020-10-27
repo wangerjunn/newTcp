@@ -15,7 +15,6 @@
 #import <UMCShare/WeiboSDK.h>
 #import <TencentOpenAPI/QQApiInterface.h>
 #import "UIView+Frame.h"
-#import "UIView+UIViewController.h"
 
 @interface ShareView () {
     NSArray *sharePlatformsArray;//分享到的平台
@@ -120,7 +119,7 @@
                 case 3:{
                     //分享到QQ
                     [dic setObject:@"QQ" forKey:@"title"];
-                    [dic setObject:@"share_wb" forKey:@"icon"];
+                    [dic setObject:@"share_qq" forKey:@"icon"];
                     [dic setObject:@3 forKey:@"num"];
                 }
                     break;
@@ -219,6 +218,7 @@
         {
             if (![WXApi isWXAppInstalled]) {
                 [self showTipsInfo:@"您未下载微信客户端，无法分享到微信！"];
+                [self removeShareView];
                 return;
             }
             
@@ -230,6 +230,7 @@
             if(![WXApi isWXAppInstalled]){
                 
                 [self showTipsInfo:@"您未下载微信客户端，无法分享到微信！"];
+                [self removeShareView];
                 return;
             }
             [self shareToPyq];
@@ -252,6 +253,7 @@
             
             if (![QQApiInterface isQQInstalled]) {
                 [self showTipsInfo:@"您未下载QQ客户端，无法分享到QQ！"];
+                [self removeShareView];
                 return;
             }
 
@@ -268,16 +270,18 @@
 
 
 - (void)showTipsInfo:(NSString *)tipsInfo {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:tipsInfo preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:tipsInfo preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+    [alertController addAction:confirmAction];
+    //创建用于显示alertController的UIViewController
+    UIViewController *alertVC = [[UIViewController alloc]init];
+    [self addSubview:alertVC.view];
+    [alertVC presentViewController:alertController animated:YES completion:^{
+      //移除用于显示alertController的UIViewController
+      [alertVC.view removeFromSuperview];
     }];
-    
-    [alert addAction:alertAction];
-    
-    alert.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self.viewController presentViewController:alert animated:YES completion:nil];
+
 }
 
 - (void)shareToWx {

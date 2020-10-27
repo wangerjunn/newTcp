@@ -10,7 +10,7 @@ import UIKit
 import Realm
 let itemWidth:CGFloat = 35
 let itemSpace:CGFloat = 10
-protocol BaseSearchViewDelegate {
+@objc protocol BaseSearchViewDelegate {
     
     /// 删除展示项目的代理
     ///
@@ -23,12 +23,14 @@ protocol BaseSearchViewDelegate {
     ///
     /// - Parameter nowText: 当前搜索框的值
     func searchBarTextChangedWith(nowText:String)
+    
+    @objc optional func searchBarSearchButtonClicked(nowText:String)
 }
 
 class BaseSearchView: UIView {
 
     
-    var delegate:BaseSearchViewDelegate?
+   weak var delegate:BaseSearchViewDelegate?
     
     @IBOutlet weak var searchView: UISearchBar!
     @IBOutlet weak var collectWidth: NSLayoutConstraint!
@@ -42,7 +44,8 @@ class BaseSearchView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.searchView.backgroundColor = UIColor.init(patternImage: UIImage.init(named: "backGray")!)
-        self.searchView.setBackgroundImage(UIImage.init(named: "backGray")!, for: .any, barMetrics: .default)
+        self.searchView.placeholder = "搜索"
+          self.searchView.setBackgroundImage(UIImage.init(named: "backGray")!, for: .any, barMetrics: .default)
         
 //        searchView.inputAccessoryView?.backgroundColor = UIColor.groupTableViewBackground
         dataArray = Array.init()
@@ -87,7 +90,7 @@ extension BaseSearchView{
         
         self.collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+    layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         layout.itemSize = CGSize.init(width: 30, height: 30)
         layout.scrollDirection = .horizontal;
         layout.minimumLineSpacing = itemSpace;
@@ -137,6 +140,13 @@ extension BaseSearchView:UICollectionViewDelegate,UICollectionViewDataSource,UIC
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         
+        //临时处理  应该自定义cell
+                for view in cell.subviews {
+                    if view is UIImageView {
+                        view .removeFromSuperview()
+                    }
+                }
+        
         let image = UIImageView.init(frame: CGRect.init(x: 0, y: 0, width: 30, height: 30))
         image.clipsToBounds = true
         image.layer.cornerRadius = 15
@@ -153,9 +163,18 @@ extension BaseSearchView:UICollectionViewDelegate,UICollectionViewDataSource,UIC
             }
         }
         else if (model is GroupUserModel){
-            let fModel  = model as! GroupUserModel
-            if !fModel.avater.isEmpty {
-                image.sd_setImage(with: NSURL.init(string: fModel.avater) as URL?, placeholderImage: UIImage.init(named: "mine_avatar"))
+            let fModel : UserModel? = UserModel.objects(with: NSPredicate.init(format: "userid == %@", (model as! GroupUserModel).userid)).firstObject() as! UserModel?
+            if fModel?.avater != nil {
+                image.sd_setImage(with: NSURL.init(string: (fModel?.avater)!) as URL?, placeholderImage: UIImage.init(named: "mine_avatar"))
+            }
+            else
+            {
+                image.image = UIImage.init(named: "mine_avatar")
+            }
+        }else if (model is GroupModel){
+            let fModel  = model as! GroupModel
+            if !fModel.icon_url.isEmpty {
+                image.sd_setImage(with: NSURL.init(string: fModel.icon_url) as URL?, placeholderImage: UIImage.init(named: "mine_avatar"))
             }
             else
             {
@@ -197,5 +216,7 @@ extension BaseSearchView:UISearchBarDelegate
         delegate?.searchBarTextChangedWith(nowText: searchText)
     }
     
-    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        delegate?.searchBarSearchButtonClicked!(nowText: searchBar.text!)
+    }
 }

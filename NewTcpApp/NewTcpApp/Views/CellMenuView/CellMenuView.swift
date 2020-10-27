@@ -33,7 +33,6 @@ class CellMenuView: UIView {
    
   fileprivate  override init(frame: CGRect) {
         super.init(frame: frame)
-    
     NotificationCenter.default.addObserver(self, selector: #selector(click), name: UIMenuController.willHideMenuNotification, object: nil)
         
     }
@@ -46,7 +45,7 @@ class CellMenuView: UIView {
     
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         
-        //        return true
+        return true
         if action == #selector(copyClick1(item:)) || action == #selector(copyClick2(item:)) || action == #selector(copyClick3(item:))
         {
             return true

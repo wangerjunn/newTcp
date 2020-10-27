@@ -8,17 +8,18 @@
 
 import UIKit
 
-protocol ComboboxViewDelegate {
+@objc protocol ComboboxViewDelegate {
     func comboboxViewOneRowClick(button:UIButton)
 }
 class ComboboxView: UIView {
-
-    var delegate : ComboboxViewDelegate?
+    
+    weak var delegate : ComboboxViewDelegate?
+    var btnList = Array<UIButton>()
     convenience init(titles : Array<String>, imageNames : Array<Array<String>>?, bgImgName : String?, frame:CGRect) {
         self.init()
         self.frame = UIScreen.main.bounds
         self.backgroundColor = UIColor.clear
-
+        
         let comboboxView = UIView.init(frame: frame)
         self.addSubview(comboboxView)
         //顶部边距
@@ -56,6 +57,7 @@ class ComboboxView: UIView {
             }
             oneRow.addTarget(self, action: #selector(clickOneRow), for: .touchUpInside)
             comboboxView.addSubview(oneRow)
+            btnList.append(oneRow)
             
             if (index > 0) {
                 //分割线

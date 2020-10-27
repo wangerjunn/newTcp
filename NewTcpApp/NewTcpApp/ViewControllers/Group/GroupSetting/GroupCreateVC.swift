@@ -20,6 +20,8 @@ class GroupCreateVC: BaseViewController, UISearchBarDelegate, UITableViewDelegat
     var seleDepartArray:Array<RLMObject> = []
     var seleOtherDepartArray:Array<RLMObject> = []
 
+    //群组名称
+    var groupName:String = ""
     //是否是部门数据
     var isDepartmentData:Bool = true
     
@@ -36,19 +38,22 @@ class GroupCreateVC: BaseViewController, UISearchBarDelegate, UITableViewDelegat
         }
         
         let alert = UIAlertController.init(title: "群组名称", message: "请输入创建的群组名称", preferredStyle: .alert)
-                   alert.addTextField { (textField) in
-                       textField.placeholder = "请输入群组名称"
-                   }
+        alert.addTextField { [self] (textField) in
+                textField.placeholder = "请输入群组名称"
+                textField.text = groupName
+        }
                    
         let cancelAction = UIAlertAction.init(title: "取消", style: .cancel) { (cancelAction) in
             let isOpenVC = GroupIsOpenVC()
+            self.groupName = ""
             isOpenVC.userArray = self.isDepartmentData ? self.seleDepartArray : self.seleOtherDepartArray
             self.navigationController?.pushViewController(isOpenVC, animated: true)
         }
                    
                    let okAction = UIAlertAction.init(title: "确认", style: .default) { (okAction) in
-                      let isOpenVC = GroupIsOpenVC()
-                      isOpenVC.groupName = alert.textFields?.first?.text
+                  let isOpenVC = GroupIsOpenVC()
+                    isOpenVC.groupName = alert.textFields?.first?.text
+                    self.groupName = (alert.textFields?.first?.text)!
                       isOpenVC.userArray = self.isDepartmentData ? self.seleDepartArray : self.seleOtherDepartArray
                       self.navigationController?.pushViewController(isOpenVC, animated: true)
                    }
@@ -159,9 +164,11 @@ class GroupCreateVC: BaseViewController, UISearchBarDelegate, UITableViewDelegat
             model = otherDepartDataArray![Int(indexPath.row)]
         }
             
-        cell?.setValue(model, forKey: "model")
+        
     
         let bCell = cell as! BaseTableCell
+        
+        bCell.model = model
         bCell.delegate = self
 
         bCell.rightBtn.isHidden = true
@@ -359,14 +366,14 @@ class GroupCreateVC: BaseViewController, UISearchBarDelegate, UITableViewDelegat
         params["keyword"] = searchView.text ?? ""
         params["type"] = (isDepartmentData) ? 1 : 2
         UserRequest.coachSearchUser(params: params, hadToast: true, fail: { (Error) in
-                    print(Error.localizedDescription)
+                    print(Error.description)
                 }) {[weak self] (success) in
                     
                     print("获取部门列表\(success)");
                     
                     if let code = success["code"] {
                         if "\(code)" != "1" {
-                            self?.showAlert(content: success["msg"] as! String)
+                            SVProgressHUD.showError(withStatus: success["msg"] as? String)
                             return
                         }
                     }
@@ -379,10 +386,13 @@ class GroupCreateVC: BaseViewController, UISearchBarDelegate, UITableViewDelegat
                     let user_list = success["user_list"] as! [Dictionary<String, Any>]
                     
                     var list:Array<RLMObject> = []
-                    
+                    let userid:String = sharePublicDataSingle.publicData.userid as String
                     for any in user_list {
-                        let model = FriendsModel.init(value: any)
-                        list.append(model)
+                        if any["userid"] as! String !=  userid {
+                            let model = FriendsModel.init(value: any)
+                            list.append(model)
+                        }
+                        
                     }
                     
                     

@@ -29,7 +29,13 @@ class GroupSettingTableViewHeaderItem: UICollectionViewCell {
     
     var model: GroupUserModel? {
         didSet{
-            nameLabel.text = model?.realname
+            if model != nil {
+                let userModel : UserModel? = UserModel.objects(with: NSPredicate.init(format: "userid == %@", (model?.userid)!)).firstObject() as! UserModel?
+                
+                nameLabel.text = userModel?.realname
+            }else{
+                nameLabel.text = ""
+            }
         }
     }
     required init?(coder aDecoder: NSCoder) {
@@ -40,6 +46,8 @@ class GroupSettingTableViewHeaderItem: UICollectionViewCell {
         var avatarImgV = UIImageView()
         avatarImgV.layer.cornerRadius = self.frame.size.width/2
         avatarImgV.clipsToBounds = true
+        avatarImgV.layer.borderWidth = 0.0
+        avatarImgV.layer.borderColor = UIColor.hexString(hexString: headerBorderColor).cgColor
         return avatarImgV
     }()
     //名称

@@ -73,9 +73,11 @@ class GroupMemberManageVC: GroupCreateVC {
                 model = otherDepartDataArray![Int(indexPath.row)]
             }
                 
-            cell?.setValue(model, forKey: "model")
+            
         
             let bCell = cell as! BaseTableCell
+        
+            bCell.model = model
             bCell.delegate = self
 
             bCell.rightBtn.isHidden = true
@@ -147,15 +149,15 @@ class GroupMemberManageVC: GroupCreateVC {
             params["app_token"] = sharePublicDataSingle.token
             params["keyword"] = searchView.text ?? ""
             params["type"] = (isDepartmentData) ? 1 : 2
-            UserRequest.coachSearchUser(params: params, hadToast: true, fail: { (Error) in
-                        print(Error.localizedDescription)
+            UserRequest.coachSearchUser(params: params, hadToast: true, fail: { (error) in
+                print(error.description)
                     }) {[weak self] (success) in
                         
                         print("获取部门列表\(success)");
                         
                         if let code = success["code"] {
                             if "\(code)" != "1" {
-                                self?.showAlert(content: success["msg"] as! String)
+                                SVProgressHUD.showError(withStatus: success["msg"] as? String)
                                 return
                             }
                         }
@@ -168,17 +170,22 @@ class GroupMemberManageVC: GroupCreateVC {
                         let user_list = success["user_list"] as! [Dictionary<String, Any>]
                         
                         var list:Array<RLMObject> = []
-                        
+                        let userid:String = sharePublicDataSingle.publicData.userid as String
+                
                         for any in user_list {
-                            let model = FriendsModel.init(value: any)
                             
-                            if self!.isAddMember == false {
-                                if (self?.existMember?.contains(model.userid))! {
+                            if any["userid"] as! String !=  userid {
+                                let model = FriendsModel.init(value: any)
+                                
+                                if self!.isAddMember == false {
+                                    if (self?.existMember?.contains(model.userid))! {
+                                         list.append(model)
+                                    }
+                                }else {
                                      list.append(model)
                                 }
-                            }else {
-                                 list.append(model)
                             }
+                            
                            
                         }
                         
@@ -206,22 +213,32 @@ class GroupMemberManageVC: GroupCreateVC {
         
             //appToken:App登录Token groupId:群组ID userIdStr:删除的用户ID（,分割）
         params["app_token"] = sharePublicDataSingle.token
-        params["groupId"] = groupid
-        params["userIdStr"] = idStr
+        params["groupid"] = groupid
+        params["userid_str"] = idStr
         GroupRequest.delUser(params: params, hadToast: true, fail: { (Error) in
-                    print(Error.localizedDescription)
+                    print(Error.description)
                 }) {[weak self] (success) in
                     
                     print("删除群组列表\(success)");
                     
                     if let code = success["code"] {
                         if "\(code)" != "1" {
-                            self?.showAlert(content: success["msg"] as! String)
+                            SVProgressHUD.showError(withStatus: success["msg"] as? String)
                             return
                         }
                     }
-                    self?.resultBlock?(userArray)
-                    self?.navigationController?.popViewController(animated: true)
+            let username:String = sharePublicDataSingle.publicData.userid + sharePublicDataSingle.publicData.corpid
+            var time:String? = UserDefaults.standard.object(forKey: username) as! String?
+            if time == nil{
+                time = "0"
+            }
+            UserRequest.initData(params: ["app_token":sharePublicDataSingle.token,"updatetime":time!], hadToast: true, fail: { (error) in
+    
+            }, success: { (dic) in
+                print(dic)
+                self?.resultBlock?(userArray)
+                self?.navigationController?.popViewController(animated: true)
+            })
                     
                 }
         }
@@ -236,28 +253,41 @@ class GroupMemberManageVC: GroupCreateVC {
     
         //appToken:App登录Token groupId:群组ID userIdStr:删除的用户ID（,分割）
     params["app_token"] = sharePublicDataSingle.token
-    params["groupId"] = groupid
-    params["userIdStr"] = idStr
+    params["groupid"] = groupid
+    params["userid_str"] = idStr
         
-    self.resultBlock?(userArray)
-    self.navigationController?.popViewController(animated: true)
-    return
+//    self.resultBlock?(userArray)
+//    self.navigationController?.popViewController(animated: true)
+//    return
     GroupRequest.inviteUser(params: params, hadToast: true, fail: { (Error) in
-                print(Error.localizedDescription)
+        print(Error.description)
             }) {[weak self] (success) in
                 
                 print("邀请群组列表\(success)");
                 
                 if let code = success["code"] {
                     if "\(code)" != "1" {
-                        self?.showAlert(content: success["msg"] as! String)
+                        SVProgressHUD.showError(withStatus: success["msg"] as? String)
                         return
                     }
                 }
-                self?.showAlert(content: "已邀请")
-                self?.resultBlock?(userArray)
-                self?.navigationController?.popViewController(animated: true)
-            }
+        
+        
+                let username:String = sharePublicDataSingle.publicData.userid + sharePublicDataSingle.publicData.corpid
+                var time:String? = UserDefaults.standard.object(forKey: username) as! String?
+                if time == nil{
+                    time = "0"
+                }
+                UserRequest.initData(params: ["app_token":sharePublicDataSingle.token,"updatetime":time!], hadToast: true, fail: { (error) in
+        
+                }, success: { (dic) in
+                    print(dic)
+                    self?.resultBlock?(userArray)
+                    self?.navigationController?.popViewController(animated: true)
+                })
+      
+                
+        }
     }
     
     /*

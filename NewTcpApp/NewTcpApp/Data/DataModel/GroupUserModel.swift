@@ -19,7 +19,9 @@ class GroupUserModel: BaseRealMModel {
     @objc dynamic var is_delete = "" // 是否删除
     @objc dynamic var inputtime = "" // 插入时间
     @objc dynamic var join_type = "" // 插入时间
-    override static func primaryKey()->String?
+    @objc dynamic var im_userid = ""
+    @objc dynamic var is_consult_teacher = ""//是否咨询老师
+    override static func primaryKey()->String
     {
         return "id";
     }

@@ -34,13 +34,18 @@ class TabNavgationVC: UINavigationController {
     
    
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
-        let backBtn :UIButton = UIButton.init(type: .custom)
-        backBtn.frame = CGRect.init(x: 0, y: 0, width: 40, height: 30)
-        backBtn.setTitle("返回", for: .normal)
-        backBtn.addTarget(self, action: #selector(btnClick), for: .touchUpInside)
-        let barItem :UIBarButtonItem = UIBarButtonItem.init(customView: backBtn)
-        viewController.navigationItem.leftBarButtonItem = barItem
-
+        if viewControllers.count > 0 {
+            
+            let backBtn :UIButton = UIButton.init(type: .custom)
+            backBtn.frame = CGRect.init(x: 0, y: 0, width: kNavBackWidth, height: kNavBackHeight)
+            //        backBtn.setTitle("返回", for: .normal)
+            backBtn.setImage(UIImage.init(named: "nav_back"), for: .normal)
+            backBtn.sizeToFit()
+            backBtn.addTarget(self, action: #selector(btnClick), for: .touchUpInside)
+            let barItem :UIBarButtonItem = UIBarButtonItem.init(customView: backBtn)
+            viewController.navigationItem.leftBarButtonItem = barItem
+            
+        }
         super.pushViewController(viewController, animated: true)
     }
     
@@ -48,7 +53,13 @@ class TabNavgationVC: UINavigationController {
     @objc func btnClick()
     {
         if self.children.count>1 {
+            if self.children[1] is TMTabbarController{
+                let Tab:TMTabbarController = self.children[1] as! TMTabbarController
+            let smak:SmallTalkVC = Tab.viewControllers?.first as! SmallTalkVC
+            smak.clearInputText()
+            }
             self.popViewController(animated: true)
+
         }
         else
         {

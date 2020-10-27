@@ -13,11 +13,20 @@ class BaseTableVC: BaseViewController {
 
     var memberArray:Array<GroupUserModel>?
     
-    var table:UITableView?
+     var table:UITableView?
     
      var cellName:String?
     
      var modelName:String?
+    
+    //是否显示  选择空间
+    var hidenChooseIcon:Bool? {
+        
+        didSet{
+           
+            table?.reloadData()
+        }
+    }
     
     //基础数据源
     var allDataArray:RLMResults<RLMObject>?
@@ -70,13 +79,12 @@ extension BaseTableVC{
     
     selectedArray = Array()
     
-    table = UITableView.init(frame: CGRect.init(x: 0, y: 64, width: kScreenW, height: kScreenH-64))
+    table = UITableView.init(frame: CGRect.init(x: 0, y: NAV_HEIGHT, width: kScreenW, height: MAIN_SCREEN_HEIGHT_PX-NAV_HEIGHT))
     table?.backgroundColor = UIColor.groupTableViewBackground
     self.view.addSubview(table!)
     table?.delegate = self;
     table?.dataSource = self;
     table?.tableFooterView = UIView.init()
-    self.automaticallyAdjustsScrollViewInsets = false
     
    }
     
@@ -129,35 +137,34 @@ extension BaseTableVC:UITableViewDelegate,UITableViewDataSource
         }
         
         let model:RLMObject = self.dataArray![UInt(indexPath.row)]
-        cell?.setValue(model, forKey: "model")
         
         
         if cell is  BaseTableCell {
             let bCell = cell as! BaseTableCell
+            
+            bCell.model = model
             bCell.delegate = self
             
             //MARK: - ---------------------一段垃圾代码  先这么写  要整个整理这个类----------------------
             if model is FriendsModel {
-                
-                bCell.rightBtn.isHidden = true
                 if (self.selectedArray?.contains(where: { (m) -> Bool in
                     return (m as! FriendsModel).userid == (model as! FriendsModel).userid
                 }))!{
                     
+                    
+                    
                     bCell.selectImage.image = UIImage.init(named: "logic_select")
-//                    bCell.selectImage.backgroundColor = UIColor.green
                 }
                 else
                 {
                     bCell.selectImage.image = UIImage.init(named: "logic_normal")
-//                    bCell.selectImage.backgroundColor = UIColor.red
                 }
                 
-                
+                //添加好友的时候  如果已经在群里的好友  不允许在做其他的操作
                 if (self.memberArray?.contains(where: { (m) -> Bool in
                     return m.userid == (model as!FriendsModel).userid
                 }) == true) {
-                     bCell.selectImage.image = UIImage.init(named: "logic_normal")
+                     bCell.selectImage.image = UIImage.init(named: "logic_disable")
                 }
                 
             }
@@ -179,9 +186,14 @@ extension BaseTableVC:UITableViewDelegate,UITableViewDataSource
                 if (self.memberArray?.contains(where: { (m) -> Bool in
                     return m.userid == (model as!GroupUserModel).userid
                 }) == true) {
-//                    bCell.selectImage.backgroundColor = UIColor.yellow
+                    bCell.selectImage.backgroundColor = UIColor.yellow
                 }
 
+                //选择@对象的时候  不需要显示是否选择的状态
+                if hidenChooseIcon == true {
+                    bCell.hidenChooseIcon(hiden: hidenChooseIcon!)
+                }
+                
                 
                 
             }
@@ -202,9 +214,6 @@ extension BaseTableVC:UITableViewDelegate,UITableViewDataSource
         
     }
   
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        view.endEditing(true)
-    }
 }
 
 
@@ -220,7 +229,7 @@ extension BaseTableVC
     ///   - fromIsShowSearch: 是否有搜索框
     ///   - fromSearchType: 搜索框是否显示选择项目
     ///   - fromCellHeight: cell高度
-    func configUIWith(fromCellName:String,fromIsShowSearch:Bool,fromSearchType:Bool,fromCellHeight:CGFloat)
+    @objc func configUIWith(fromCellName:String,fromIsShowSearch:Bool,fromSearchType:Bool,fromCellHeight:CGFloat)
     {
         self.cellName = fromCellName
         guard self.cellName != nil else {
@@ -230,8 +239,9 @@ extension BaseTableVC
         
         
         if path == nil {
-            
-            self.table?.register(NSClassFromString(cellName!), forCellReuseIdentifier: cellName!)
+            let  aClass = getClassWitnClassName(cellName!) as! UITableViewCell.Type
+            self.table?.register(aClass , forCellReuseIdentifier: cellName!)
+
         }
         else
         {
@@ -244,12 +254,12 @@ extension BaseTableVC
         if self.isShowSearch! {
             searchArray = Array()
             searchView = Bundle.main.loadNibNamed("BaseSearchView", owner: self, options: nil)?.last as? BaseSearchView
-            searchView?.frame = CGRect.init(x: 0, y: 64, width: kScreenW, height: 50)
+            searchView?.frame = CGRect.init(x: 0, y: NAV_HEIGHT, width: kScreenW, height: 50)
             searchView?.configCollectionViewWith(isShowCollect: fromSearchType)
             searchView?.delegate = self
             self.view.addSubview(searchView!)
             
-            self.table?.frame = CGRect.init(x: 0, y:50+64, width: kScreenW, height:kScreenH-64-50)
+            self.table?.frame = CGRect.init(x: 0, y:50+NAV_HEIGHT, width: kScreenW, height:MAIN_SCREEN_HEIGHT_PX-NAV_HEIGHT-50)
             
         }
         
@@ -266,16 +276,41 @@ extension BaseTableVC
     /// - Parameter dataArray: 要显示的数据
     func setDataArray(dataArray:RLMResults<RLMObject>)
     {
-        self.allDataArray = dataArray
+//        self.allDataArray = dataArray
         self.dataArray = dataArray
         self.table?.reloadData()
     
     }
+    
+    /// 空页面提醒
+    func showRemind(){
+        
+        let fView = UIView.init(frame: CGRect(x: 0, y: 0, width: kScreenW, height: 50))
+        
+        let line = UIView.init(frame: CGRect(x: 0, y: 0, width: kScreenW, height: 1))
+        line.backgroundColor = UIColor.groupTableViewBackground
+        fView.addSubview(line)
+        
+        let numberLable = UILabel.init(frame: CGRect.init(x: 0, y: 10, width: kScreenW, height: 30))
+        numberLable.textAlignment = NSTextAlignment.center
+        numberLable.font = UIFont.systemFont(ofSize: 14)
+        
+        numberLable.text = "没有查找到相关内容"
+        fView.addSubview(numberLable)
+        if self.dataArray != nil {
+            if (self.dataArray?.count)! == 0 && (self.searchView?.searchView.text?.count)! > 0{
+                table?.tableFooterView = fView
+            }else{
+                table?.tableFooterView = UIView.init()
+            }
+        }
+    }
+
 }
 
 extension BaseTableVC:BaseSearchViewDelegate
 {
-    @objc func searchDeleteItem(item: RLMObject)
+    func searchDeleteItem(item: RLMObject)
     {
     }
 
@@ -283,25 +318,10 @@ extension BaseTableVC:BaseSearchViewDelegate
     {
         
     }
-    
-    
-    
-//    //获取工程的名字
-//    func getBundleName() -> String{
-//        var bundlePath = Bundle.main.bundlePath
-//        bundlePath = bundlePath.components(separatedBy: "/").last!
-//        bundlePath = bundlePath.components(separatedBy: ".").first!
-//        return bundlePath
-//    }
-//    //通过类名返回一个AnyClass
-//    func getClassWitnClassName(_ name:String) ->AnyClass?{
-//        let type = getBundleName() + "." + name
-//        return NSClassFromString(type)
-//    }
-
-    
-    
-   
+    func searchBarSearchButtonClicked(nowText:String)
+    {
+        
+    }
     
 }
 

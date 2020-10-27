@@ -13,7 +13,7 @@ import UIKit
 //tabbar高度
 let kTabBarHeight :Float = 49;
 let kScreenW = UIScreen.main.bounds.width
-let kScreenH = UIScreen.main.bounds.height
+//let kScreenH = UIScreen.main.bounds.height
 
 
 
@@ -30,8 +30,8 @@ class TMTabbarController: UITabBarController
     
     lazy var titleArray:[String] =
     {
-//       let array = ["闲聊","主题","文件","公告"]
-        let array = ["闲聊","公告"]
+//       let array = ["闲聊","话题","文件","公告"]
+        let array = ["闲聊","话题"]
        return array
     
     }()
@@ -45,7 +45,7 @@ class TMTabbarController: UITabBarController
     
     lazy var imageNomalArray:[String] =
     {
-            let array = ["tab_main_normal","tab_main_normal","tab_main_normal","tab_main_normal","tab_main_normal"]
+            let array = ["xljm5_Nomal","xljm6_Nomal","xljm8","xljm9"]
             return array
             
     }()
@@ -53,7 +53,7 @@ class TMTabbarController: UITabBarController
     
     lazy var imageSelectArray:[String] =
         {
-            let array = ["tab_main_selected","tab_main_selected","tab_main_selected","tab_main_selected","tab_main_selected"]
+            let array = ["xljm5_Select","xljm6_Select","xljm8","xljm9"]
             return array
             
     }()
@@ -75,10 +75,11 @@ class TMTabbarController: UITabBarController
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = UIColor.hexString(hexString: "EFEFF4")
         tabBar.isHidden = true
+        self.configBackItem()
         creatTab()
-        self.setRightBtnWithArray(items: [UIImage.init(named: "nav_groupSetting")])
+//        self.setRightBtnWithArray(items: [UIImage.init(named: "nav_groupSetting")])
 
 //        self.navigationController?.setNavigationBarHidden(true, animated: true)
         // Do any additional setup after loading the view.
@@ -101,9 +102,53 @@ class TMTabbarController: UITabBarController
     
     override func rightBtnClick(button: UIButton) {
         let groupSettingVC : GroupSettingViewController = GroupSettingViewController()
-        groupSettingVC.conversationModel = groupModel
+        groupSettingVC.targetId = groupModel?.targetId
         self.navigationController?.pushViewController(groupSettingVC, animated: true)
     }
+    
+    
+    /// 是否隐藏tab
+    ///
+    /// - Parameter isHidden: <#isHidden description#>
+    func isHiddenTab(isHidden:Bool){
+        
+        bgImageView.isHidden = isHidden;
+        for view in bgImageView.subviews {
+            if view != nil {
+                view.isHidden = isHidden
+            }
+        }
+    }
+
+    
+    
+    /// 消除主题红点显示
+    func clearRedPoint(){
+    
+      let btn:TMTabbarButton? = bgImageView.viewWithTag(1001) as? TMTabbarButton
+        if btn != nil {
+            btn?.clearBadge()
+        }
+        
+    }
+    
+    
+    /// 显示红点提醒
+    ///
+    /// - Parameter type: 对应是哪个按钮 左--》右 0..1..2
+    func showRedPoint(type:Int){
+    
+        let btn:TMTabbarButton? = bgImageView.viewWithTag(type+1000) as? TMTabbarButton
+        
+        if btn != nil {
+            
+            btn?.badgeCenterOffset = CGPoint.init(x:-(btn?.frame.size.width)!/2+10 , y: 16)
+            btn?.showBadge(with: .redDot, value: 0, animationType: .none)
+        }
+    }
+    
+    
+    
     
 }
 
@@ -113,8 +158,8 @@ extension TMTabbarController
     /// 创建tab
     func creatTab()
     {
-        bgImageView.frame = CGRect(x: 0, y: kScreenH - 49, width: kScreenW, height: 49)
-        bgImageView.backgroundColor = UIColor.black
+        bgImageView.frame = CGRect(x: 0, y: MAIN_SCREEN_HEIGHT_PX - 49, width: kScreenW, height: 49)
+        bgImageView.backgroundColor = UIColor.groupTableViewBackground
         self.view.addSubview(bgImageView)
     }
     
@@ -122,7 +167,7 @@ extension TMTabbarController
     //MARK: 创建子控制器
     func creatChildViewControllers ()
     {
-        for index  in 0...titleArray.count-1
+        for index  in 0..<titleArray.count
         {
            
 //           let aClass = getClassWitnClassName(vcArray[index]) as! UIViewController.Type
@@ -148,18 +193,18 @@ extension TMTabbarController
                           vc?.tabBarItem.selectedImage = UIImage(named:imageSelectArray[index])
                           vc?.title = titleArray[index]
                 addChild(vc!)
-                vc?.navigationController?.setNavigationBarHidden(true, animated: false)
+//                vc?.navigationController?.setNavigationBarHidden(true, animated: false)
 //
                  cuVC = vc
-//            case 1:
-//                let vc = ThemeListVCViewController.init()
-//                let nav = TabNavgationVC.init(rootViewController: vc)
-//                vc.tabBarItem.title = titleArray[index]
-//                vc.tabBarItem.image = UIImage(named:imageNomalArray[index])
-//                vc.tabBarItem.selectedImage = UIImage(named:imageSelectArray[index])
-//                vc.title = titleArray[index]
-//                addChildViewController(nav)
-//                cuVC = vc
+            case 1:
+                let vc = ThemeListVCViewController.init()
+                let nav = TabNavgationVC.init(rootViewController: vc)
+                vc.tabBarItem.title = titleArray[index]
+                vc.tabBarItem.image = UIImage(named:imageNomalArray[index])
+                vc.tabBarItem.selectedImage = UIImage(named:imageSelectArray[index])
+                vc.title = titleArray[index]
+                addChild(nav)
+                cuVC = vc
 //            case 2:
 //                let vc = UIViewController.init()
 //                let nav = TabNavgationVC.init(rootViewController: vc)
@@ -169,15 +214,15 @@ extension TMTabbarController
 //                vc.title = titleArray[index]
 //                addChildViewController(nav)
 //                cuVC = vc
-            case 1:
-                let vc = TestVC.init()
-                let nav = TabNavgationVC.init(rootViewController: vc)
-                vc.tabBarItem.title = titleArray[index]
-                vc.tabBarItem.image = UIImage(named:imageNomalArray[index])
-                vc.tabBarItem.selectedImage = UIImage(named:imageSelectArray[index])
-                vc.title = titleArray[index]
-                addChild(nav)
-                cuVC = vc
+//            case 1:
+//                let vc = TestVC.init()
+//                let nav = TabNavgationVC.init(rootViewController: vc)
+//                vc.tabBarItem.title = titleArray[index]
+//                vc.tabBarItem.image = UIImage(named:imageNomalArray[index])
+//                vc.tabBarItem.selectedImage = UIImage(named:imageSelectArray[index])
+//                vc.title = titleArray[index]
+//                addChildViewController(nav)
+//                cuVC = vc
             default: break
                 
             }
@@ -188,7 +233,7 @@ extension TMTabbarController
             let btn:TMTabbarButton = TMTabbarButton.init(frame:CGRect(x: width * CGFloat(index), y: 0, width: width, height: 49 ))
 
             btn.configWithItem((cuVC?.tabBarItem)!)
-            btn.tag = index
+            btn.tag = index+1000
             
             bgImageView.addSubview(btn)
             btn.addTarget(self, action: #selector(btnClick(_ :)), for: UIControl.Event.touchUpInside)
@@ -196,7 +241,7 @@ extension TMTabbarController
                 
                 self.selectedIndex = 0
                 btn.isSelected = true
-                btn.backgroundColor = UIColor.blue
+//                btn.backgroundColor = UIColor.hexString(hexString: "1782D2")
                 currentBtn = btn;
             }
             
@@ -205,14 +250,16 @@ extension TMTabbarController
     
     @objc func btnClick(_ btn:TMTabbarButton)
     {
+        
         if (currentBtn != nil)
         {
            currentBtn?.isSelected = false
-           currentBtn?.backgroundColor = UIColor.black
+            currentBtn?.backgroundColor = UIColor.groupTableViewBackground
+
         }
         btn.isSelected = true
-        self.selectedIndex = btn.tag
-        btn.backgroundColor = UIColor.blue
+        self.selectedIndex = btn.tag-1000
+//        btn.backgroundColor = UIColor.hexString(hexString: "1782D2")
         currentBtn = btn
     
     }

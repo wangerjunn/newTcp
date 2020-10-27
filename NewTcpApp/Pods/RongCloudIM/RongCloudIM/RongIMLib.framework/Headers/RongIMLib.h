@@ -55,6 +55,8 @@ FOUNDATION_EXPORT const unsigned char RongIMLibVersionString[];
 #import <RongIMLib/RCVoiceMessage.h>
 #import <RongIMLib/RCHQVoiceMessage.h>
 #import <RongIMLib/RCSightMessage.h>
+#import <RongIMLib/RCChatroomKVNotificationMessage.h>
+#import <RongIMLib/RCReferenceMessage.h>
 /// 工具类
 #import <RongIMLib/RCAMRDataConverter.h>
 #import <RongIMLib/RCTSMutableDictionary.h>
@@ -83,10 +85,11 @@ FOUNDATION_EXPORT const unsigned char RongIMLibVersionString[];
 #import <RongIMLib/RCFileUtility.h>
 #import <RongIMLib/RCReadReceiptInfo.h>
 #import <RongIMLib/RCUserOnlineStatusInfo.h>
+#import <RongIMLib/RCConversationStatusInfo.h>
 
 // log
 #import <RongIMLib/RCFwLog.h>
 
-//Downlad
+// Downlad
 #import <RongIMLib/RCDownloadItem.h>
 #import <RongIMLib/RCResumeableDownloader.h>

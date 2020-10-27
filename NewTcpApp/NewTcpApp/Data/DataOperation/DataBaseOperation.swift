@@ -21,7 +21,7 @@ class DataBaseOperation: NSObject
         /// todo  暂时写死  最后需要换成用户相关的唯一标识字段
         let username:String = sharePublicDataSingle.publicData.userid + sharePublicDataSingle.publicData.corpid
         config.fileURL =  config.fileURL?.deletingLastPathComponent().appendingPathComponent(username).appendingPathExtension("realm")
-        print(config.fileURL!)
+        print("数据库地址：\(config.fileURL!)")
         //数据库迁移
         self.performingMigrationWithConfig(config: config)
         RLMRealmConfiguration.setDefault(config)
@@ -53,7 +53,15 @@ class DataBaseOperation: NSObject
         try? realm.commitWriteTransaction()
         
     }
-    
+    public static func addOnlyData(rlmObject:RLMObject)
+    {
+        let realm = RLMRealm.default()
+        realm.beginWriteTransaction()
+        realm.add(rlmObject)
+        try? realm.commitWriteTransaction()
+        
+    }
+
     
     /// 批量添加或修改数据
     ///
@@ -127,11 +135,35 @@ class DataBaseOperation: NSObject
     /// - Parameter config: config description
     private static func performingMigrationWithConfig(config:RLMRealmConfiguration)
     {
-        config.schemaVersion = 1
+        config.schemaVersion = 4
         config.migrationBlock = { (migration:RLMMigration,oldSchemaVersion:UInt64)->Void in
             if oldSchemaVersion < 1 {
                 
             }
+            if oldSchemaVersion < 2 {
+                migration.enumerateObjects(GroupModel.className(), block: { (oldObject, newObject) in
+                    newObject?["parentid"] = ""
+                    newObject?["type"] = ""
+                    newObject?["from_msg_uid"] = ""
+                    newObject?["img_url"] = ""
+                })
+            }
+            if oldSchemaVersion < 3 {
+                migration.enumerateObjects(GroupModel.className(), block: { (oldObject, newObject) in
+                    newObject?["is_consult"] = NSNumber(value: 0)
+//                    newObject?["consult_info"] = nil
+                })
+            }
+            
+            if oldSchemaVersion < 4 {
+                let username:String = sharePublicDataSingle.publicData.userid + sharePublicDataSingle.publicData.corpid
+                UserDefaults.standard.set("0", forKey: username);
+                migration.enumerateObjects(GroupModel.className(), block: { (oldObject, newObject) in
+                    newObject?["project_id"] = ""
+                })
+            }
+            
+            
         }
     }
     

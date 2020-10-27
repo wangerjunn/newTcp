@@ -13,8 +13,12 @@
 #import "NewTcpApp-Swift.h"
 #import <UMShare/UMShare.h>
 #import <WeiboSDK.h>
+#import "ApplePayViewController.h"
+#import <UMCommon/UMCommon.h>
+#import <UMCommon/UMRemoteConfig.h>
+#import <UMCommon/UMRemoteConfigSettings.h>
 
-@interface AppDelegate () <WXApiDelegate>
+@interface AppDelegate () <WXApiDelegate,WeiboSDKDelegate,UMRemoteConfigDelegate>
 
 @end
 
@@ -24,7 +28,19 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-//    [WXApi registerApp:@"wx17ddf17d8a5e75dc" universalLink:@"https://com.salesvalley.tcpapp/"];
+//    [WXApi startLogByLevel:WXLogLevelDetail logBlock:^(NSString * _Nonnull log) {
+//        NSLog(@"微信日志: %@",log);
+//    }];
+//
+    
+    [self configUMRemoteConfig];
+    
+    [WXApi registerApp:@"wx17ddf17d8a5e75dc" universalLink:@"https://tcp.xslp.cn/tcpapp/"];
+//
+//    //调用自检函数
+//    [WXApi checkUniversalLinkReady:^(WXULCheckStep step, WXCheckULStepResult* result) {
+//        NSLog(@"WeixinSDK2：%@, %u, %@, %@", @(step), result.success, result.errorInfo, result.suggestion);
+//    }];
 //    //注册微博
 //    //    [WeiboSDK enableDebugMode:YES];
 //    [WeiboSDK registerApp:@"2126283473"];
@@ -36,7 +52,7 @@
     [self configUSharePlatforms];
     
     if (@available(iOS 13.0, *)) {
-
+        NSLog(@"%@", [UIDevice currentDevice].systemVersion);
         } else {
           
             CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -45,7 +61,8 @@
             self.window.autoresizesSubviews = YES;
             
             ViewController *viewController = [[ViewController alloc] init];
-//            BaseNavigationController *nav = [[BaseNavigationController alloc] initWithRootViewController:viewController];
+            
+//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[ApplePayViewController new]];
             self.window.rootViewController = viewController;
             [self.window makeKeyAndVisible];
             
@@ -57,6 +74,23 @@
     return YES;
 }
 
+- (void)configUMRemoteConfig {
+    [UMConfigure initWithAppkey:kUM_Appkey channel:@"App Store"];
+    
+    
+    //初始化设置activateAfterFetch = YES 为获取数据后自动激活
+    //初始化设置activateAfterFetch = NO 就需要手动激活数据[UMRemoteConfig activateWithCompletionHandler:nil];
+    [UMRemoteConfig remoteConfig].remoteConfigDelegate = self;
+    [UMRemoteConfig remoteConfig].configSettings.activateAfterFetch = YES;
+    
+    //设置本地默认的数据，在没有取到服务器的数据的时候，获取本地的数据
+    [UMRemoteConfig setDefaultsFromPlistFileName:@"RemoteConfigDefaults"];
+    
+    //获取的是上一次激活的数据，如果上一次的数据是最新的就直接使用，
+    //不然需要在UMRemoteConfigDelegate:remoteConfigActivated的回调里面获取最新值，后续的获取都是最新的值
+    NSString* configtestValue =  [UMRemoteConfig configValueForKey:kAppStore_is_auditing];
+    NSLog(@"remoteConfigActivated init configtest = %@",configtestValue);
+}
 - (void)confitUShareSettings
 {
     /*
@@ -75,8 +109,8 @@
     
         //配置微信平台的Universal Links
     //微信和QQ完整版会校验合法的universalLink，不设置会在初始化平台失败
-    [UMSocialGlobal shareInstance].universalLinkDic = @{@(UMSocialPlatformType_WechatSession):@"https://com.salesvalley.tcpapp/",
-                                                        @(UMSocialPlatformType_QQ):@"https://umplus-sdk-download.oss-cn-shanghai.aliyuncs.com/qq_conn/101364990"
+    [UMSocialGlobal shareInstance].universalLinkDic = @{@(UMSocialPlatformType_WechatSession):@"https://tcp.xslp.cn/tcpapp/",
+                                                        @(UMSocialPlatformType_QQ):@"https://tcp.xslp.cn/qq_conn/101364990/"
                                                         };
 }
 - (void)configUSharePlatforms
@@ -102,5 +136,102 @@ void uncaughtExceptionHandler(NSException*exception){
     // Internal error reporting
 }
 
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary<NSString *,id> *)options {
+    return  [WXApi handleOpenURL:url delegate:self];
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [WXApi handleOpenURL:url delegate:self] || [WeiboSDK handleOpenURL:url delegate:self];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [WXApi handleOpenURL:url delegate:self];
+
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void(^)(NSArray<id<UIUserActivityRestoring>> * __nullable restorableObjects))restorationHandler {
+    return [WXApi handleOpenUniversalLink:userActivity delegate:self];
+}
+#pragma mark -- 微信回调
+- (void)onResp:(BaseResp *)resp {
+    
+    /*
+     ErrCode ERR_OK = 0(用户同意)
+     ERR_AUTH_DENIED = -4（用户拒绝授权）
+     ERR_USER_CANCEL = -2（用户取消）
+     code    用户换取access_token的code，仅在ErrCode为0时有效
+     state   第三方程序发送时用来标识其请求的唯一性的标志，由第三方程序调用sendReq时传入，由微信终端回传，state字符串长度不能超过1K
+     lang    微信客户端当前语言
+     country 微信用户当前国家信息
+     */
+    
+    
+//    if([resp isKindOfClass:[SendAuthResp class]]) { // 微信登录
+//
+//
+//    } else if([resp isKindOfClass:[PayResp class]]) {
+//        // 微信支付
+//        if (self.WXCallBackResultBlock) {
+//            self.WXCallBackResultBlock(resp);
+//        }
+//    }
+//    else if ([resp isKindOfClass:[SendMessageToWXResp class]]){ // 微信分享
+//        if (self.WXCallBackResultBlock) {
+//            self.WXCallBackResultBlock(resp);
+//        }
+//        SendMessageToWXResp *res = (SendMessageToWXResp *)resp;
+//        if(res.errCode == 0){
+//            NSLog(@"用户分享成功");
+//        } else if (res.errCode == -4) {
+//            NSLog(@"用户取消分享");
+//        }
+//    }
+}
+
+- (void)didReceiveWeiboRequest:(WBBaseRequest *)request {
+    
+}
+
+/**
+ 收到一个来自微博客户端程序的响应
+ 
+ 收到微博的响应后，第三方应用可以通过响应类型、响应的数据和 WBBaseResponse.userInfo 中的数据完成自己的功能
+ @param response 具体的响应对象
+ */
+- (void)didReceiveWeiboResponse:(WBBaseResponse *)response {
+    
+}
+
+#pragma mark- UMRemoteConfigDelegate
+
+-(void)remoteConfigActivated:(UMRemoteConfigActiveStatus)status
+                       error:(nullable NSError*)error
+                    userInfo:(nullable id)userInfo{
+    if (error) {
+        NSLog(@"remoteConfigActivated error:%@",error);
+        return;
+    }
+    
+    //回调到这表示当前获取到了服务器的最新的参数
+    NSString* configtestValue =  [UMRemoteConfig configValueForKey:kAppStore_is_auditing];
+    NSLog(@"remoteConfigActivated Activated for configtest = %@",configtestValue);
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"remoteConfigActivated" object:nil];
+}
+
+
+-(void)remoteConfigReady:(UMRemoteConfigActiveStatus)status
+                   error:(nullable NSError*)error
+                userInfo:(nullable id)userInfo{
+    if (error) {
+        NSLog(@"remoteConfigReady error:%@",error);
+        return;
+    }
+    
+    //在[UMRemoteConfig remoteConfig].configSettings.activateAfterFetch = NO的时候调用，来选择用以前的缓存的数据还是激活当前下载的服务器最新的数据
+    //[UMRemoteConfig activateWithCompletionHandler:nil];
+    
+}
 
 @end

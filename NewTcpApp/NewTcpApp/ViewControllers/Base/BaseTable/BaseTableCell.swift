@@ -9,14 +9,12 @@
 import UIKit
 import Realm
 
-protocol BaseCellDelegate {
+@objc protocol BaseCellDelegate {
     func cellRightBtnClick(model:RLMObject)
 }
-
-@objcMembers
 class BaseTableCell: UITableViewCell {
     
-    var delegate:BaseCellDelegate?
+   weak var delegate:BaseCellDelegate?
     
     @IBOutlet weak var imageLeftSpace: NSLayoutConstraint!
 
@@ -40,7 +38,9 @@ class BaseTableCell: UITableViewCell {
                rightBtnWidth.constant = 60
                rightBtn.layer.borderWidth = 0.5
                rightBtn.layer.cornerRadius = 6
-//                self.selectImage.isHidden = true
+                rightBtn.clipsToBounds = true
+                rightBtn.titleLabel?.font = FONT_14
+                rightBtn.isEnabled = false
                 if fModel.type == 1 {
                    rightBtn.layer.borderColor = UIColor.orange.cgColor
                    rightBtn.setTitleColor(UIColor.orange, for: .normal)
@@ -48,11 +48,17 @@ class BaseTableCell: UITableViewCell {
                 }
                 else if fModel.type == 2
                 {
-                    rightBtn.layer.borderColor = UIColor.green.cgColor
-                    rightBtn.setTitleColor(UIColor.green, for: .normal)
+                    rightBtn.layer.borderColor = UIColor.hexString(hexString: "7bbb28").cgColor
+                    rightBtn.setTitleColor(UIColor.hexString(hexString: "7bbb28"), for: .normal)
                    rightBtn.setTitle("粉丝", for: .normal)
                 }
-            
+                else if fModel.type == 3 || fModel.type == 4
+                {
+                    rightBtn.layer.borderColor = UIColor.hexString(hexString: "7bbb28").cgColor
+                    rightBtn.setTitleColor(UIColor.hexString(hexString: "7bbb28"), for: .normal)
+                    rightBtn.setTitle("陌生人", for: .normal)
+                }
+                self.cycleStyle(isCycle: true)
                 if !fModel.avater.isEmpty {
                    iconImage.sd_setImage(with: NSURL.init(string: fModel.avater) as URL?, placeholderImage: UIImage.init(named: "mine_avatar"))
                 }
@@ -60,30 +66,64 @@ class BaseTableCell: UITableViewCell {
                 {
                      iconImage.image = UIImage.init(named: "mine_avatar")
                 }
+                
+                
 
             }
             else if model is GroupUserModel{
-                let fModel  = model as! GroupUserModel
-                desLable.text = fModel.realname
-                if !fModel.avater.isEmpty {
-                    iconImage.sd_setImage(with: NSURL.init(string: fModel.avater) as URL?, placeholderImage: UIImage.init(named: "mine_avatar"))
+                
+                 self.cycleStyle(isCycle: true)
+                let fModel : UserModel? = UserModel.objects(with: NSPredicate.init(format: "userid == %@", (model as! GroupUserModel).userid)).firstObject() as! UserModel?
+
+                desLable.text = fModel?.realname
+                if fModel?.avater != nil {
+                    iconImage.sd_setImage(with: NSURL.init(string: (fModel?.avater)!) as URL?, placeholderImage: UIImage.init(named: "mine_avatar"))
                 }
                 else
                 {
                     iconImage.image = UIImage.init(named: "mine_avatar")
                 }
+               
                 rightBtn.isHidden = true
             }
             else if model is GroupModel {
-//            group_name  user_num
-                
+
+                self.cycleStyle(isCycle: false)
                 selectImage.isHidden = true
                 self.imageLeftSpace.constant = -20
-                self.rightBtn.setTitleColor(UIColor.white, for: .normal)
-                self.rightBtn.backgroundColor = UIColor.hexString(hexString: "166AD9")
+                
+                
+                
+                
+                
+                
                 
                 
                 let gModel = model as! GroupModel
+                
+//                let predicate = NSPredicate(format:"userid == %@ AND groupid == %@  AND is_delete == '0'", sharePublicDataSingle.publicData.userid,gModel.groupid)
+//                
+//                let results = GroupUserModel.objects(with: predicate)
+                
+                self.rightBtn.setTitleColor(UIColor.white, for: .normal)
+                self.rightBtn.backgroundColor = UIColor.hexString(hexString: "166AD9")
+                
+//                if results.count == 0 {
+//                    self.rightBtn.setTitleColor(UIColor.white, for: .normal)
+//                    self.rightBtn.backgroundColor = UIColor.hexString(hexString: "166AD9")
+//                    self.rightBtn.setTitle("申请加入", for: .normal)
+//                }
+//                else{
+//                
+//                    self.rightBtn.setTitleColor(UIColor.lightGray, for: .normal)
+//                    self.rightBtn.backgroundColor = UIColor.white
+//                    self.rightBtn.setTitle("已加入", for: .normal)
+//                    self.rightBtn.isEnabled = false
+//                }
+                
+                
+                
+                
                 if !gModel.group_name.isEmpty {
                     
                 let num = gModel.user_num.isEmpty ? "0" : gModel.user_num
@@ -91,29 +131,61 @@ class BaseTableCell: UITableViewCell {
                 }
                
                iconImage.image = UIImage.init(named: "mine_avatar")
+                
+                if !gModel.icon_url.isEmpty {
+                    iconImage.sd_setImage(with: NSURL.init(string: gModel.icon_url) as URL?, placeholderImage: UIImage.init(named: "mine_avatar"))
+                }
+                else
+                {
+                    iconImage.image = UIImage.init(named: "mine_avatar")
+                }
+               
+                
             }
         }
     
     }
     
+    func hidenChooseIcon(hiden:Bool){
     
+        if hiden == true {
+            selectImage.isHidden = true
+            self.imageLeftSpace.constant = -20
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-//        self.contentView.backgroundColor = UIColor.groupTableViewBackground
+
         self.selectionStyle = .none
-//        iconImage.backgroundColor = UIColor.red
-        iconImage.layer.cornerRadius = iconImage.bounds.size.width/2
+//        iconImage.layer.cornerRadius = iconImage.bounds.size.width/2.0
+        
+    }
+
+    
+    func cycleStyle(isCycle:Bool){
+        
+        if isCycle == true {
+            iconImage.layer.cornerRadius = 15
+
+        }
+        else{
+           iconImage.layer.cornerRadius = 4
+        }
+        iconImage.layer.borderWidth = 0.3
+        iconImage.layer.borderColor = UIColor.lightGray.cgColor
         iconImage.clipsToBounds = true
         
-//        iconImage.image = UIImage.init(named: "mine_avatar")
-        // Initialization code
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+    
+    
+    
+    
+    
+//    override func setSelected(_ selected: Bool, animated: Bool) {
+//         super.setSelected(selected, animated: animated)
+//
+//        // Configure the view for the selected state
+//    }
     
 }

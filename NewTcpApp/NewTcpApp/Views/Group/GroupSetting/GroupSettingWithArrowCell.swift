@@ -26,18 +26,18 @@ class GroupSettingWithArrowCell: UITableViewCell {
         }
         detailLabel.mas_makeConstraints { [unowned self](make) in
             make!.left.equalTo()(self.titleLabel.mas_right)!.offset()(10)
-            make!.right.equalTo()(-LEFT_PADDING_GS - 15)
+            make!.right.equalTo()(-LEFT_PADDING_BIG)
             make!.centerY.equalTo()(self)
         }
         detailImage.mas_makeConstraints { [unowned self](make) in
-            make!.right.equalTo()(-LEFT_PADDING_GS - 15)
+            make!.right.equalTo()(-LEFT_PADDING_BIG)
             make!.centerY.equalTo()(self)
-            make!.size.equalTo()(CGSize.init(width: 25, height: 25))
+            make!.size.equalTo()(CGSize.init(width: 17, height: 17))
         }
         rightArrow.mas_makeConstraints { [unowned self](make) in
             make!.right.equalTo()(-LEFT_PADDING_GS)
             make!.centerY.equalTo()(self)
-            make!.size.equalTo()(CGSize.init(width: 7, height: 14))
+            make!.size.equalTo()(CGSize.init(width: 16, height: 16))
         }
 
     }
@@ -46,15 +46,17 @@ class GroupSettingWithArrowCell: UITableViewCell {
         didSet{
             titleLabel.text = (model as! Dictionary<String, Any>).first?.key
             detailLabel.text = (model as! Dictionary<String, Any>).first?.value as! String?
+            titleLabel.sizeToFit()
             if titleLabel.text == "群组公告" && detailLabel.text != "未设置"{
                 titleLabel.mas_remakeConstraints { (make) in
                     make!.left.equalTo()(LEFT_PADDING_GS)
                     make!.top.equalTo()(12)
+                    make!.width.equalTo()(titleLabel.frame.size.width)
                 }
-                let height = ((detailLabel.text?.getTextHeight(font: FONT_14, width: SCREEN_WIDTH - LEFT_PADDING_GS * 2 - 15))! + 0.4) > 60 ? 50.5 : ((detailLabel.text?.getTextHeight(font: FONT_14, width: SCREEN_WIDTH - LEFT_PADDING_GS * 2 - 15))! + 0.4)
+                let height = ((detailLabel.text?.getTextHeight(font: FONT_14, width: SCREEN_WIDTH - LEFT_PADDING_GS - LEFT_PADDING_BIG))! + 0.4) > 60 ? 50.5 : ((detailLabel.text?.getTextHeight(font: FONT_14, width: SCREEN_WIDTH - LEFT_PADDING_GS - LEFT_PADDING_BIG))! + 0.4)
                 detailLabel.mas_remakeConstraints { [unowned self](make) in
                     make!.left.equalTo()(self.titleLabel)
-                    make!.right.equalTo()(-LEFT_PADDING_GS - 15)
+                    make!.right.equalTo()(-LEFT_PADDING_BIG)
                     make!.top.equalTo()(self.titleLabel.mas_bottom)!.offset()(5)
                     make!.height.equalTo()(height)
                 }
@@ -62,11 +64,21 @@ class GroupSettingWithArrowCell: UITableViewCell {
                 titleLabel.mas_remakeConstraints { [unowned self](make) in
                     make!.left.equalTo()(LEFT_PADDING_GS)
                     make!.centerY.equalTo()(self)
+                    make!.width.equalTo()(self.titleLabel.frame.size.width)
                 }
-                detailLabel.mas_remakeConstraints { [unowned self](make) in
-                    make!.left.equalTo()(self.titleLabel.mas_right)!.offset()(10)
-                    make!.right.equalTo()(-LEFT_PADDING_GS - 15)
-                    make!.centerY.equalTo()(self)
+                if rightArrow.isHidden{
+                    detailLabel.mas_remakeConstraints { [unowned self](make) in
+                        make!.left.equalTo()(self.titleLabel.mas_right)!.offset()(10)
+                        make!.right.equalTo()(-LEFT_PADDING_GS)
+                        make!.centerY.equalTo()(self)
+                    }
+                }else{
+                    detailLabel.mas_remakeConstraints { [unowned self](make) in
+                        make!.left.equalTo()(self.titleLabel.mas_right)!.offset()(10)
+                        make!.right.equalTo()(-LEFT_PADDING_BIG)
+                        make!.centerY.equalTo()(self)
+                    }
+
                 }
             }
         }
@@ -78,7 +90,7 @@ class GroupSettingWithArrowCell: UITableViewCell {
     class func cell(withTableView tableView: UITableView) -> GroupSettingWithArrowCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: String(describing: self)) as? GroupSettingWithArrowCell
         if cell == nil {
-            cell = GroupSettingWithArrowCell.init(style: .default, reuseIdentifier: String(describing: self))
+            cell = GroupSettingWithArrowCell.init(style: .default, reuseIdentifier: "GroupSettingWithArrowCell")
             cell?.selectionStyle = .none
         }
         return cell!
@@ -98,7 +110,8 @@ class GroupSettingWithArrowCell: UITableViewCell {
         var detailLabel = UILabel()
         detailLabel.font = FONT_14
         detailLabel.textColor = UIColor.lightGray
-        detailLabel.numberOfLines = 3
+        detailLabel.textAlignment = .right
+//        detailLabel.numberOfLines = 3
         return detailLabel
     }()
     
@@ -110,7 +123,7 @@ class GroupSettingWithArrowCell: UITableViewCell {
     }()
     
     //箭头
-    fileprivate lazy var rightArrow: UIImageView = {
+    lazy var rightArrow: UIImageView = {
         var rightArrow = UIImageView()
         rightArrow.image = UIImage.init(named: "rightArrow")
         return rightArrow

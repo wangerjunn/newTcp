@@ -34,8 +34,8 @@ class TMTabbarButton: UIButton {
     imageView?.contentMode = UIView.ContentMode.center
        titleLabel?.textAlignment = NSTextAlignment.center
        titleLabel?.font = UIFont.systemFont(ofSize: 11)
-       self.setTitleColor(UIColor.white, for: .normal)
-       self.setTitleColor(UIColor.white, for: .selected)
+       self.setTitleColor(UIColor.darkGray, for: .normal)
+       self.setTitleColor(UIColor.hexString(hexString: "1782D2"), for: .selected)
     
     }
     
@@ -69,6 +69,7 @@ extension TMTabbarButton
         
         self.setImage(item.image, for: UIControl.State.normal)
         self.setImage(item.selectedImage, for: UIControl.State.selected)
+        
     }
 
     

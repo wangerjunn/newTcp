@@ -38,7 +38,7 @@ class BaseRequest: NSObject {
     ///   - hadToast: 是否添加提醒
     ///   - fail: 失败返回闭包(返回空闭包)
     ///   - success: 成功返回闭包
-    public static func basePost(url:String,params:Dictionary<String, Any>,hadToast:Bool,fail:@escaping ( _ err:Error) ->() ,success:@escaping (_ success:Dictionary<String, Any>) ->())
+    public static func basePost(url:String,params:Dictionary<String, Any>,hadToast:Bool,fail:@escaping ( _ fail:Dictionary<String, Any>) ->() ,success:@escaping (_ success:Dictionary<String, Any>) ->())
     {
        let manager = self.initManager()
         let task:URLSessionDataTask? =  manager.post(url, parameters: params, headers: nil, progress: nil, success: { (task:URLSessionDataTask, any:Any) in
@@ -54,14 +54,17 @@ class BaseRequest: NSObject {
                 if dic?["data"] is Dictionary<String, Any>{
                     success(dic?["data"] as! Dictionary<String, Any>)
                 }else{
-                    if dic != nil {
-                        success(dic!)
-                    }
+                    success(dic!)
                 }
             }else{
                 print(String.changeToString(inValue: dic?["msg"] ?? "错了"))
-                if dic != nil {
-                    success(dic!)
+                if (dic != nil){
+                    fail(dic!)
+                }
+                
+                if hadToast == true{
+                    SVProgressHUD.showError(withStatus: String.changeToString(inValue: dic?["msg"] ?? "出现错误"))
+                    SVProgressHUD.dismiss(withDelay: 0.5)
                 }
                 
             }
@@ -70,7 +73,14 @@ class BaseRequest: NSObject {
         }
         }) { (task:URLSessionDataTask?,err:Error) in
             
-           fail(err)
+            if hadToast == true{
+             SVProgressHUD.showError(withStatus: "网络出现错误")
+             SVProgressHUD.dismiss(withDelay: 0.5)
+            }
+            let view = UIApplication.shared.keyWindow?.viewWithTag(10086)
+            if view is UITableView {
+                (view as! UITableView).mj_header?.endRefreshing()
+            }
            print(err.localizedDescription.description )
         }
         task?.resume()
@@ -140,7 +150,7 @@ class BaseRequest: NSObject {
     {
         let appRoot = UIApplication.shared.keyWindow?.rootViewController
         var topVC = appRoot
-        while ((topVC?.children) != nil) {
+    while ((topVC?.children) != nil) {
             if topVC! is UITabBarController {
                 topVC = (topVC! as! UITabBarController).selectedViewController
             }

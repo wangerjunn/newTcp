@@ -14,6 +14,7 @@ class GroupListCell: RCConversationBaseCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.contentView.addSubview(headerImageView)
+        self.contentView.addSubview(badgeLb)
         self.contentView.addSubview(nameLabel)
         self.contentView.addSubview(timeLabel)
         self.contentView.addSubview(detailLabel)
@@ -39,30 +40,28 @@ class GroupListCell: RCConversationBaseCell {
     }
     override var model: RCConversationModel!{
         didSet {
-            
-//            let imageViewsCount : Int = model.extend != nil ? (model.extend as! NSMutableArray).count : 0
-//            var imageViews : Array<Any> = []
-//            for _ in 0..<imageViewsCount {
-//                let imageView = UIImageView()
-//                imageView.backgroundColor = UIColor.darkGray
-//                imageViews.append(imageView)
-//            }
             self.backgroundColor = model.isTop ? model.topCellBackgroundColor : model.cellBackgroundColor
 
             self.headerImageView.sd_setImage(with: NSURL.init(string: model.extend != nil ? model.extend as! String : " ") as URL?, placeholderImage: UIImage.init(named: "mine_avatar"))
-//            self.headerImageView.stitchingOnImageView(imageViews: imageViews)
-            self.headerImageView.badgeCenterOffset = CGPoint(x : -2, y : 0)
-
-            if model.unreadMessageCount > 0 {
-                self.headerImageView.showBadge(with: .redDot, value: model.unreadMessageCount, animationType: .none)
+//            self.headerImageView.badgeCenterOffset = CGPoint(x : -2, y : 0)
+            
+            let groupIdArr : Array<String> = GroupModel.objects(with: NSPredicate.init(format: "parentid == %@", model.targetId)).value(forKeyPath: "groupid") as! Array<String>
+            var subGroupMesTotalCount : Int32? = 0
+            for targetId in groupIdArr {
+                subGroupMesTotalCount = subGroupMesTotalCount! + RCIMClient.shared().getUnreadCount(.ConversationType_GROUP, targetId: targetId)
+            }
+            if model.unreadMessageCount > 0 || subGroupMesTotalCount! > 0{
+//                self.headerImageView.showBadge()
+                self.badgeLb.isHidden = false
             }else{
-                self.headerImageView.clearBadge()
+//                self.headerImageView.clearBadge()
+                self.badgeLb.isHidden = true
             }
             
-            if model.receivedTime == 0 {
+            if model.sentTime == 0 {
                 self.timeLabel.text = ""
             }else{
-                let target : Date = Date.init(timeIntervalSince1970: TimeInterval(model.receivedTime / 1000))
+                let target : Date = Date.init(timeIntervalSince1970: TimeInterval(model.sentTime / 1000))
                 self.timeLabel.text = self.convertDate(date: target)
             }
             self.timeLabel.sizeToFit()
@@ -81,109 +80,59 @@ class GroupListCell: RCConversationBaseCell {
                 }
                 
                 var lastSender : String?
-                if model.senderUserId == "1" || model.senderUserId == sharePublicDataSingle.publicData.userid {
+                if model.senderUserId == sharePublicDataSingle.publicData.im_userid {
                     lastSender = nil
+                }else if model.senderUserId.contains("system"){
+                    lastSender="[系统]"
                 }else{
-                    
-                    let groupUserModels = GroupUserModel.objects(with: NSPredicate.init(format:"userid == %@", model.senderUserId))
-                    
-                    var groupUserModel:GroupUserModel?
-                    
-                    if groupUserModels.count > 0 {
-                        groupUserModel = groupUserModels.firstObject() as? GroupUserModel
-                    }
-//                    let groupUserModel = GroupUserModel.objects(with: NSPredicate.init(format:"userid == %@", model.senderUserId)).firstObject() as? GroupUserModel
-                    lastSender = groupUserModel?.realname
-                }
+                    let groupUserModel = GroupUserModel.objects(with: NSPredicate.init(format:"im_userid == %@ AND is_delete == '0'", model.senderUserId)).firstObject() as? GroupUserModel
+                    if groupUserModel != nil {
+                        let userModel : UserModel? = UserModel.objects(with: NSPredicate.init(format: "userid == %@", (groupUserModel?.userid)!)).firstObject() as! UserModel?
 
-//                RC:CmdMsg  RC:CmdNtf  RC:InfoNtf RCTextMessageTypeIdentifier RC:GrpNtf
-                
-                var lastMessage : String!
-                switch model.objectName {
-                case "RC:TxtMsg":
-                    lastMessage = model.lastestMessage.conversationDigest()
-                case "RC:VcMsg":
-                    lastMessage = "[语音]"
-                case "RC:ImgMsg":
-                    lastMessage = "[图片]"
-                case "RC:LBSMsg":
-                    lastMessage = "[位置]"
-                case "RC:FileMsg":
-                    lastMessage = "[文件]"
-                case "RC:ImgTextMsg","RC:PSMultiImgTxtMsg","RC:PSImgTxtMsg":
-                    lastMessage = "[图文]"
-                case "RC:GrpNtf":
-                    if model.lastestMessage is RCGroupNotificationMessage {
-                        let message = model.lastestMessage as! RCGroupNotificationMessage
-                        lastMessage = message.message
+                        lastSender = userModel?.realname
+                    }else {
+                        let userModel : UserModel? = UserModel.objects(with: NSPredicate.init(format: "im_userid == %@", model.senderUserId)).firstObject() as! UserModel?
                         
-                        if model.conversationTitle == nil && message.operation == "Create" {
-                            let jsonData:Data = message.data.data(using: .utf8)!
-                            
-                            let groupInfo = try? (JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as! Dictionary<String,Any>)
-                            self.nameLabel.text = groupInfo!["targetGroupName"] as? String
+                        if userModel != nil {
+                            lastSender = userModel?.realname
+                        }
+                        
+                    }
+                    
+                }
+                var msg : String? = RCKitUtility.formatMessage(model.lastestMessage)
+                if model.objectName == RCGroupNotificationMessageIdentifier {
+                    let notModel:RCGroupNotificationMessage = model.lastestMessage as! RCGroupNotificationMessage
+                    if notModel.operation == GroupNotificationMessage_GroupOperationAdd || notModel.operation == GroupNotificationMessage_GroupOperationKicked {
+                        
+                        if notModel.message.contains(sharePublicDataSingle.publicData.realname) {
+                            msg = notModel.message.replacingOccurrences(of: sharePublicDataSingle.publicData.realname, with: "你")
+
+                        }  else {
+                            msg = notModel.message
                         }
                     }
-                    
-                default:
-                    
-                    lastMessage = ""
-                    if model.lastestMessage.responds(to: #selector(RCMessageContentView.conversationDigest)) {
-                        lastMessage = model.lastestMessage.conversationDigest()
-                    }
-            
-                    break
                 }
-                self.detailLabel.text = unreadMessageCountStr! + (lastSender == nil ? "" : (lastSender! + " : ")) + lastMessage
+                if model.objectName == RCRecallNotificationMessageIdentifier && lastSender != nil{
+                    msg = lastSender! + "撤回了一条消息"
+                    lastSender = nil
+                }
+                if msg == nil {
+                    msg = ""
+                }
+                let detailText  = unreadMessageCountStr! + (model.hasUnreadMentioned ? "[有人@我]" : "") as String + (lastSender == nil ? "" : (lastSender! + " : ")) + msg!
+
+                let attrText = NSMutableAttributedString.init(string: detailText)
+                if model.hasUnreadMentioned {
+                    let range : Range = detailText.range(of: "[有人@我]")!
+                    let nsrange = detailText.nsRange(from: range)
+                    attrText.addAttributes([NSAttributedString.Key.foregroundColor : UIColor.red], range: nsrange)
+                }
+                self.detailLabel.attributedText = attrText
+
             }
         }
     }
-    /*
-    var model : String! {
-        didSet {
-        
-            let imageViewsCount : Int = Int(model)!
-            var imageViews : Array<Any> = []
-            for _ in 0..<imageViewsCount {
-                let imageView = UIImageView()
-                imageView.backgroundColor = UIColor.darkGray
-                imageViews.append(imageView)
-            }
-            self.headerImageView.stitchingOnImageView(imageViews: imageViews)
-            self.headerImageView.badgeCenterOffset = CGPoint(x : -2, y : 0)
-            if imageViewsCount == 1 {
-                
-                self.headerImageView.showBadge(with: .redDot, value: imageViewsCount, animationType: .none)
-            }else if imageViewsCount == 9 {
-                self.headerImageView.showBadge(with: .number, value: 100, animationType: .none)
-            }else{
-                self.headerImageView.showBadge(with: .number, value: imageViewsCount, animationType: .none)
-            }
-            let targetStr = "2017-02-28 16:00"
-            let dateFormatter : DateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-            let targetD = dateFormatter.date(from: targetStr)
-            self.timeLabel.text = self.convertDate(date: targetD!)
-            self.timeLabel.sizeToFit()
-            timeLabel.mas_updateConstraints { [unowned self](make) in
-                make!.width.equalTo()(self.timeLabel.frame.size.width)
-            }
-            self.nameLabel.text = "群组名称群组名称群组名称群组名称群组名称"
-//            NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:modelStr];
-//            NSString *str = [[modelStr componentsSeparatedByString:@":"].firstObject stringByAppendingString:@":"];
-//            NSRange range = [modelStr rangeOfString:str];
-//            
-//            [attrStr addAttribute:NSForegroundColorAttributeName value:color range:range];
-//            
-//            self.lbDetail.attributedText = attrStr;
-            let detailText = "[有人@我]消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容"
-            let attrStr : NSMutableAttributedString = NSMutableAttributedString.init(string: detailText)
-            let attrText : String = "[有人@我]"
-            attrStr.addAttributes([NSForegroundColorAttributeName:UIColor.red], range: NSRange.init(location: 0, length: attrText.characters.count))
-            self.detailLabel.attributedText = attrStr
-        }
-    }
- */
     func convertDate(date:Date) -> String {
         if Date.isToday(target: date) {
             let dateFormatter : DateFormatter = DateFormatter()
@@ -198,15 +147,16 @@ class GroupListCell: RCConversationBaseCell {
         }
     }
     class func cell(withTableView tableView: UITableView) -> GroupListCell {
-//        var cell = tableView.dequeueReusableCell(withIdentifier: String(describing: self)) as? GroupListCell
-//        if cell == nil {
-//            cell = GroupListCell.init(style: .default, reuseIdentifier: String(describing: self))
-//            cell?.selectionStyle = .none
-//        }
-        let cell = GroupListCell.init(style: .default, reuseIdentifier: String(describing: self))
-        cell.selectionStyle = .none
-
-        return cell
+        var cell = tableView.dequeueReusableCell(withIdentifier: String(describing: self)) as? GroupListCell
+        if cell == nil {
+            cell = GroupListCell.init(style: .default, reuseIdentifier: String(describing: self))
+            cell?.selectionStyle = .none
+        }
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupListCell") as? GroupListCell
+////        let cell = GroupListCell.init(style: .default, reuseIdentifier: String(describing: self))
+//        cell?.selectionStyle = .none
+            
+        return cell!
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -215,14 +165,25 @@ class GroupListCell: RCConversationBaseCell {
     
     //MARK: - Getter and Setter
     //头像
-    fileprivate var headerImageView: StitchingImageView = {
+     lazy var headerImageView: StitchingImageView = {
         var headerImageView = StitchingImageView.init(frame: CGRect(x: 0, y: 0, width: headerImageViewWidth, height: headerImageViewWidth))
         headerImageView.layer.cornerRadius = 4.0
+        headerImageView.clipsToBounds = true
+        headerImageView.layer.borderColor = UIColor.hexString(hexString: headerBorderColor).cgColor
+        headerImageView.layer.borderWidth = 0.5
         return headerImageView
     }()
-    
+    //badgeView
+    lazy var badgeLb: UILabel = {
+        var badgeLb = UILabel.init()
+        badgeLb.frame = CGRect.init(x: LEFT_PADDING+headerImageViewWidth - 4, y: LEFT_PADDING - 4, width: 8, height: 8)
+        badgeLb.layer.cornerRadius = 4
+        badgeLb.layer.masksToBounds = true
+        badgeLb.backgroundColor = UIColor.red
+        return badgeLb
+    }()
     //名称
-    fileprivate lazy var nameLabel: UILabel = {
+     lazy var nameLabel: UILabel = {
         var nameLabel = UILabel()
         nameLabel.font = FONT_14
         nameLabel.textColor = UIColor.black
@@ -230,7 +191,7 @@ class GroupListCell: RCConversationBaseCell {
     }()
     
     //时间
-    fileprivate lazy var timeLabel: UILabel = {
+     lazy var timeLabel: UILabel = {
         var timeLabel = UILabel()
         timeLabel.font = FONT_14
         timeLabel.textColor = UIColor.lightGray
@@ -239,10 +200,11 @@ class GroupListCell: RCConversationBaseCell {
     }()
     
     //内容
-    fileprivate lazy var detailLabel: UILabel = {
+     lazy var detailLabel: UILabel = {
         var detailLabel = UILabel()
         detailLabel.font = FONT_14
         detailLabel.textColor = UIColor.lightGray
         return detailLabel
     }()
+   
 }

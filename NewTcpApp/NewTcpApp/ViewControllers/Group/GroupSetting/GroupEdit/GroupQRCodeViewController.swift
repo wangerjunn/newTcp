@@ -17,13 +17,6 @@ class GroupQRCodeViewController: BaseViewController {
             self.getQrCodeWithGroupId(id: (groupModel?.groupid)!)
             headerImageView.sd_setImage(with: NSURL.init(string: groupModel?.icon_url != nil ? (groupModel?.icon_url)!  : " ") as URL?, placeholderImage: UIImage.init(named: "mine_avatar"))
             groupNameLabel.text = groupModel?.group_name
-            let currentDate : Date = Date()
-            let dateFormatter : DateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "M月d日"
-            let endDate : Date = Date.init(timeInterval: 7*24*60*60, since: currentDate)
-            let endDateStr : String = dateFormatter.string(from: endDate)
-
-            bottomLabel.text = "该二维码7天内(\(endDateStr)前)有效,重新进入将更新"
         }
     }
     override func viewDidLoad() {
@@ -42,8 +35,8 @@ class GroupQRCodeViewController: BaseViewController {
         bgView.mas_makeConstraints { (make) in
             make!.left.equalTo()(20)
             make!.right.equalTo()(-20)
-            make!.top.equalTo()(NAV_HEIGHT + 80)
-            make!.bottom.equalTo()(-120)
+            make!.top.equalTo()(NAV_HEIGHT + kReal(value: 80))
+            make!.bottom.equalTo()(kReal(value: -120))
         }
         headerImageView.mas_makeConstraints { (make) in
             make!.left.equalTo()(20)
@@ -73,36 +66,50 @@ class GroupQRCodeViewController: BaseViewController {
         }
     }
     func getQrCodeWithGroupId(id:String){
-        
+        self.progressShow()
         var params = Dictionary<String, Any>()
         params["app_token"] = sharePublicDataSingle.token
         params["groupid"] = id
-        GroupRequest.getQrCode(params: params, hadToast: true, fail: { (error) in
-            
+        GroupRequest.getQrCode(params: params, hadToast: true, fail: { [weak self](error) in
+            if let strongSelf = self {
+                strongSelf.progressDismiss()
+            }
         }) { [weak self](success) in
             if let strongSelf = self{
+                strongSelf.progressDismiss()
+                strongSelf.qrCodeImageView.sd_setImage(with: NSURL.init(string: (success["qr_url"] as? String) != nil ? success["qr_url"] as! String : " ") as URL?, placeholderImage: UIImage.init(named: ""))
+                let currentDate : Date = Date()
+                let dateFormatter : DateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "M月d日"
                 
-                if let code = success["code"] {
-                    if "\(code)" != "1" {
-                        self?.showAlert(content: success["msg"] as! String)
-                        return
-                    }
+                if let life_day = success["life_day"], let expire = success["expire"] {
+                    let endDate : Date = Date.init(timeIntervalSince1970:(expire as! TimeInterval))
+                    let endDateStr : String = dateFormatter.string(from: endDate)
+                    strongSelf.bottomLabel.text = "该二维码\(life_day)天内(\(endDateStr)前)有效,重新进入将更新"
+                }else{
+                    let endDate : Date = Date.init(timeInterval: 7*24*60*60, since: currentDate)
+                    let endDateStr : String = dateFormatter.string(from: endDate)
+                    strongSelf.bottomLabel.text = "该二维码7天内(\(endDateStr)前)有效,重新进入将更新"
                 }
-                strongSelf.qrCodeImageView.sd_setImage(with: NSURL.init(string: (success["qr_url"] as? String) != nil ? success["qr_url"] as! String : " ") as URL?, placeholderImage: UIImage.init(named: "mine_avatar"))
             }
         }
         
     }
+
     
     fileprivate lazy var bgView: UIView = {
         var bgView = UIView.init()
         bgView.backgroundColor = UIColor.white
         bgView.layer.cornerRadius = 2
+        bgView.clipsToBounds = true
         return bgView
     }()
     fileprivate var headerImageView: UIImageView = {
         var headerImageView = UIImageView.init()
         headerImageView.layer.cornerRadius = 4.0
+        headerImageView.clipsToBounds = true
+        headerImageView.layer.borderColor = UIColor.hexString(hexString: headerBorderColor).cgColor
+        headerImageView.layer.borderWidth = 0.5
         return headerImageView
     }()
     fileprivate var groupNameLabel: UILabel = {
