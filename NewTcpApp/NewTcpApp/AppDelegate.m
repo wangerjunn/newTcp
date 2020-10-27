@@ -217,7 +217,7 @@ void uncaughtExceptionHandler(NSException*exception){
     //回调到这表示当前获取到了服务器的最新的参数
     NSString* configtestValue =  [UMRemoteConfig configValueForKey:kAppStore_is_auditing];
     NSLog(@"remoteConfigActivated Activated for configtest = %@",configtestValue);
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"remoteConfigActivated" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"remoteConfigActivated" object:nil];
 }
 
 

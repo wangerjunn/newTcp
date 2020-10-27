@@ -130,7 +130,7 @@
 //    [_bridge callHandler:@"lastFunTest" data:nil responseCallback:^(id response) {
 //        NSLog(@"这里是OC调用JS成功后，JS回调的参数:%@", response);
 //    }];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getAppOnlineVersion) name:@"remoteConfigActivated" object:nil];
     [SVProgressHUD showWithStatus:@"加载中..."];
     [self getAppOnlineVersion];
 }
@@ -149,35 +149,38 @@
 //         [userContentController addUserScript:cookieScript];
 //    }
     
-    //创建网页配置对象
-     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-    config.userContentController = userContentController;
-    config.websiteDataStore = [WKWebsiteDataStore defaultDataStore];
-    config.suppressesIncrementalRendering = YES;
-    WKProcessPool *processpool = [[WKProcessPool alloc] init];
+    if (wkWebView == nil) {
+        //创建网页配置对象
+         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+        config.userContentController = userContentController;
+        config.websiteDataStore = [WKWebsiteDataStore defaultDataStore];
+        config.suppressesIncrementalRendering = YES;
+        WKProcessPool *processpool = [[WKProcessPool alloc] init];
 
-    config.processPool = processpool;
-    
-     // 创建设置对象
-     WKPreferences *preference = [[WKPreferences alloc]init];
-     
-//    animationImageview.animationImages
-     // 在iOS上默认为NO，表示是否允许不经过用户交互由javaScript自动打开窗口
-     preference.javaScriptCanOpenWindowsAutomatically = YES;
-     config.preferences = preference;
+        config.processPool = processpool;
+        
+         // 创建设置对象
+         WKPreferences *preference = [[WKPreferences alloc]init];
          
-        
-     //这个类主要用来做native与JavaScript的交互管理
-     WKUserContentController * wkUController = [[WKUserContentController alloc] init];
-     //注册一个name为jsToOcNoPrams的js方法
-     [wkUController addScriptMessageHandler:self  name:@"shareToPlatform"];
-     [wkUController addScriptMessageHandler:self  name:@"logout"];
-     [wkUController addScriptMessageHandler:self  name:@"init"];//登录成功回调
-     config.userContentController = wkUController;
-        
-    wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 20, kScreenWidth, kScreenHeight-20) configuration:config];
-    wkWebView.navigationDelegate = self;
-
+    //    animationImageview.animationImages
+         // 在iOS上默认为NO，表示是否允许不经过用户交互由javaScript自动打开窗口
+         preference.javaScriptCanOpenWindowsAutomatically = YES;
+         config.preferences = preference;
+             
+            
+         //这个类主要用来做native与JavaScript的交互管理
+         WKUserContentController * wkUController = [[WKUserContentController alloc] init];
+         //注册一个name为jsToOcNoPrams的js方法
+         [wkUController addScriptMessageHandler:self  name:@"shareToPlatform"];
+         [wkUController addScriptMessageHandler:self  name:@"logout"];
+         [wkUController addScriptMessageHandler:self  name:@"init"];//登录成功回调
+         config.userContentController = wkUController;
+            
+        wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 20, kScreenWidth, kScreenHeight-20) configuration:config];
+        wkWebView.navigationDelegate = self;
+        [self.view addSubview:wkWebView];
+    }
+    
     NSString *timeStamp = [NSString stringWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]];
     
     NSString *versionStr = [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
@@ -189,7 +192,6 @@
     NSString *webString = [NSString stringWithFormat:@"%@sbc.html#/class?device=app&deviceType=ios&versionCode=%@&timestamp=%@12345",(isAudit ? kBASE_URL_INNER : kBASE_URL),version,timeStamp];//&timestamp=%@12345,timeStamp
     
     //请求
-//   NSMutableURLRequest *request= [NSMutableURLRequest requestWithURL:[NSURL URLWithString:webString]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:webString] cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:3600*24];
 //   if (token) {
 //       [request setValue:[NSString stringWithFormat:@"%@=%@",@"xslp_sso_token", token] forHTTPHeaderField:@"Cookie"];
@@ -197,7 +199,6 @@
 //   }
     
     [wkWebView loadRequest:request];
-    [self.view addSubview:wkWebView];
 }
 
 // 页面开始加载时调用
