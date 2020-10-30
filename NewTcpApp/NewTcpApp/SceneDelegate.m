@@ -9,8 +9,6 @@
 #import "SceneDelegate.h"
 #import "ViewController.h"
 #import "NewTcpApp-Swift.h"
-#import "WXApi.h"
-#import "ApplePayViewController.h"
 
 @interface SceneDelegate ()
 
@@ -28,7 +26,6 @@
       [self.window setWindowScene:windowScene];
       [self.window setBackgroundColor:[UIColor whiteColor]];
       [self.window setRootViewController:[ViewController new]];
-//    [self.window setRootViewController:[ApplePayViewController new]];
       [self.window makeKeyAndVisible];
     
     

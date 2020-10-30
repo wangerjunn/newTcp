@@ -22,16 +22,6 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>alipay</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>ali2016041401298919</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
 			<string>weixin</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
@@ -42,17 +32,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>alipays</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>ali2016041401298919</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>wxPay</string>
+			<string>wechat</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>pay.xslp.cn</string>
@@ -105,10 +85,6 @@
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>alipayshare</string>
-		<string>alipays</string>
-		<string>alipay</string>
-		<string>alisdkdemo</string>
 		<string>weixin</string>
 		<string>wechat</string>
 		<string>weixinULAPI</string>

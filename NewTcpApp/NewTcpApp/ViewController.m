@@ -16,7 +16,6 @@
 #import "NewTcpApp-Swift.h"
 #import "ShareView.h"
 #import <SVProgressHUD/SVProgressHUD.h>
-#import "ApplePayViewController.h"
 
 @interface ViewController () <WKNavigationDelegate,WKScriptMessageHandler>
 {
@@ -29,8 +28,7 @@
 
 @implementation ViewController
 - (void)toPurchase {
-    ApplePayViewController *applePay = [ApplePayViewController new];
-    [self.navigationController pushViewController:applePay animated:YES];
+    
 }
 
 #pragma mark -- 获取APP线上版本
@@ -174,6 +172,7 @@
          [wkUController addScriptMessageHandler:self  name:@"shareToPlatform"];
          [wkUController addScriptMessageHandler:self  name:@"logout"];
          [wkUController addScriptMessageHandler:self  name:@"init"];//登录成功回调
+         [wkUController addScriptMessageHandler:self name:@"lessonDetailBuyAction"];//课程详情
          config.userContentController = wkUController;
             
         wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 20, kScreenWidth, kScreenHeight-20) configuration:config];
@@ -203,26 +202,26 @@
 
 // 页面开始加载时调用
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
-    NSLog(@"页面开始加载时调用 didStartProvisionalNavigation");
+//    NSLog(@"页面开始加载时调用 didStartProvisionalNavigation");
 }
 
 // 页面加载失败时调用
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
-    NSLog(@"页面加载失败时调用 didFailProvisionalNavigation");
+//    NSLog(@"页面加载失败时调用 didFailProvisionalNavigation");
     [SVProgressHUD showErrorWithStatus:@"页面加载失败"];
 }
 
     
 // 当内容开始返回时调用
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
-    NSLog(@"当内容开始返回时调用 didCommitNavigation");
+//    NSLog(@"当内容开始返回时调用 didCommitNavigation");
     
 }
 
     
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    NSLog(@"页面加载完成之后调用 didFinishNavigation");
+//    NSLog(@"页面加载完成之后调用 didFinishNavigation");
   
     [SVProgressHUD dismiss];
 }
@@ -242,8 +241,8 @@
     
     NSString * urlString = navigationAction.request.URL.absoluteString;
     
-    NSString *wxScheme = @"pay.xslp.cn";
-    NSString *referer = [NSString stringWithFormat:@"%@://",wxScheme];
+    NSString *target = @"pay.xslp.cn";
+    NSString *referer = [NSString stringWithFormat:@"%@://",target];
 
     
     NSLog(@"%@", urlString);
@@ -278,20 +277,10 @@
         return;
     }
     
-    if ([urlString hasPrefix:@"weixin://wap/pay"]) {
-        [[UIApplication sharedApplication] openURL:navigationAction.request.URL options:@{} completionHandler:nil];
-               decisionHandler(WKNavigationActionPolicyCancel);
-               return;
-    }
-    if ([urlString containsString:@"alipay://alipayclient/"]) {
-        //调起支付宝支付
-        [[UIApplication sharedApplication] openURL:navigationAction.request.URL options:@{} completionHandler:nil];
-        decisionHandler(WKNavigationActionPolicyCancel);
-        return;
-    }else if ([urlString hasPrefix:wxScheme]) {
-        //由微信支付返回到APP回调
+    if ([urlString hasPrefix:target]) {
+        //back
 
-        NSRange range = [urlString rangeOfString:wxScheme];
+        NSRange range = [urlString rangeOfString:target];
         if (range.location != NSNotFound) {
             
             NSString *lastUrlString = [urlString substringFromIndex:range.location+range.length];
@@ -306,47 +295,15 @@
         }
             
         
-    }
-
-//    if ([urlString isEqualToString:@"https://pay.xslp.cn/index.php/User/Payment/pay"]) {
-//
-//        NSData *data = request.HTTPBody;
-//
-//
-//        NSString *params = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-//        NSLog(@"%@", params);
-//
-//        if ([params containsString:@"platform=ios"]) {
-//            return YES;
-//        }
-//        NSURL *url = [NSURL URLWithString:urlString];
-//        NSMutableURLRequest *requestM = [NSMutableURLRequest requestWithURL:url];
-//        // 如果有webMethod并且是POST,则POST方式组合提交
-//        [requestM setHTTPMethod:@"POST"];
-//        NSString *body = nil;
-//        body = [NSString stringWithFormat:@"%@&platform=ios",params];
-//        [requestM setHTTPBody: [body dataUsingEncoding: NSUTF8StringEncoding]];
-//
-//        NSLog(@"%@",body);
-//       urlString = [urlString stringByAppendingFormat:@"%@&platform=ios",params];
-//
-//        [webView loadRequest:requestM];
-//        return NO;
-//
-//    }
-
-
-    else if ([[navigationAction.request.URL absoluteString] containsString:@"https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb"]) {
-        //weixin://wap/pay?prepayid%3Dwx2317173862758252dcad00251141517400&package=1136975133&noncestr=1592903981&sign=4d26d96740bc8240197aa215c4137180
-        
+    } else if ([[navigationAction.request.URL absoluteString] containsString:@"redirect_url="]) {
         
         NSRange range = [urlString rangeOfString:@"redirect_url="];
-        if (range.location != NSNotFound) {
-            NSString *url = [urlString substringToIndex:range.location+range.length];
-
-            NSString *subString = [urlString substringFromIndex:range.location+range.length];
-
-            //判断URL是否修改，使返回App
+        NSString *url = [urlString substringToIndex:range.location+range.length];
+        
+        NSString *subString = [urlString substringFromIndex:range.location+range.length];
+        
+        if ([subString hasSuffix:@"jump"]) {
+            //back
             if (redirectUrl && [subString isEqualToString:redirectUrl]) {
                 redirectUrl = nil;
                 decisionHandler(WKNavigationActionPolicyAllow);
@@ -356,7 +313,7 @@
             
             subString = [subString substringFromIndex:5];
 
-            subString = [wxScheme stringByAppendingString:subString];
+            subString = [target stringByAppendingString:subString];
 
             redirectUrl = subString;
             
@@ -372,6 +329,14 @@
         }
 
     }
+    
+    
+    if (![urlString hasPrefix:@"http"]) {
+        //
+        [[UIApplication sharedApplication] openURL:navigationAction.request.URL options:@{} completionHandler:nil];
+               decisionHandler(WKNavigationActionPolicyCancel);
+               return;
+    }
     decisionHandler(WKNavigationActionPolicyAllow);
 }
     
@@ -379,7 +344,7 @@
 // 根据客户端受到的服务器响应头以及response相关信息来决定是否可以跳转
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler{
     NSString * urlStr = navigationResponse.response.URL.absoluteString;
-    NSLog(@"当前跳转地址：%@",urlStr);
+//    NSLog(@"当前跳转地址：%@",urlStr);
     //允许跳转
     decisionHandler(WKNavigationResponsePolicyAllow);
     //不允许跳转
@@ -434,6 +399,8 @@
     }else if ([message.name isEqualToString:@"init"]) {
         //初始化融云
         NSLog(@"%@", message.body);
+    }else if ([message.name isEqualToString:@"lessonDetailBuyAction"]) {
+        //课程详情action
     }
 }
 

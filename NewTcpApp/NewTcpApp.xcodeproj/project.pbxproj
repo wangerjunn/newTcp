@@ -169,7 +169,6 @@
 		FE706DB7251B56240023F144 /* SDWaitingView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE706DB1251B56240023F144 /* SDWaitingView.m */; };
 		FE706DB8251B56240023F144 /* SDBrowserImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE706DB2251B56240023F144 /* SDBrowserImageView.m */; };
 		FE706DBE251B5CC90023F144 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = FE706DBD251B5CC90023F144 /* UIView+Frame.m */; };
-		FE77EFDB25369FB600B3C2AD /* ApplePayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE77EFDA25369FB600B3C2AD /* ApplePayViewController.m */; };
 		FE77EFE02536A52B00B3C2AD /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE77EFDF2536A52B00B3C2AD /* StoreKit.framework */; };
 		FE8052992521D6DB000E9CA8 /* GroupCreateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8052972521D6D8000E9CA8 /* GroupCreateVC.swift */; };
 		FE80529A2521D6DB000E9CA8 /* GroupMemberManageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8052982521D6DB000E9CA8 /* GroupMemberManageVC.swift */; };
@@ -388,8 +387,6 @@
 		FE706DB5251B56240023F144 /* SDBrowserImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDBrowserImageView.h; sourceTree = "<group>"; };
 		FE706DBC251B5CC90023F144 /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
 		FE706DBD251B5CC90023F144 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
-		FE77EFD925369FB600B3C2AD /* ApplePayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplePayViewController.h; sourceTree = "<group>"; };
-		FE77EFDA25369FB600B3C2AD /* ApplePayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplePayViewController.m; sourceTree = "<group>"; };
 		FE77EFDF2536A52B00B3C2AD /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		FE77EFE22536A94D00B3C2AD /* NewTcpApp-PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NewTcpApp-PrefixHeader.pch"; sourceTree = "<group>"; };
 		FE8052972521D6D8000E9CA8 /* GroupCreateVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCreateVC.swift; sourceTree = "<group>"; };
@@ -492,8 +489,6 @@
 				E659141424C3F23C00E18A74 /* ViewController.m */,
 				FE8052A82521F771000E9CA8 /* SbcViewController.h */,
 				FE8052A92521F772000E9CA8 /* SbcViewController.m */,
-				FE77EFD925369FB600B3C2AD /* ApplePayViewController.h */,
-				FE77EFDA25369FB600B3C2AD /* ApplePayViewController.m */,
 				FE41970324C691CF00CE17A7 /* NewTcpApp-Bridging-Header.h */,
 				FE77EFE22536A94D00B3C2AD /* NewTcpApp-PrefixHeader.pch */,
 				E659141624C3F23C00E18A74 /* Main.storyboard */,
@@ -1289,7 +1284,6 @@
 				FE706DB6251B56240023F144 /* SDPhotoBrowser.m in Sources */,
 				FE706C83251B426B0023F144 /* GroupRequest.swift in Sources */,
 				FE706CB0251B42760023F144 /* ChatContentModel.swift in Sources */,
-				FE77EFDB25369FB600B3C2AD /* ApplePayViewController.m in Sources */,
 				FE706D6D251B42810023F144 /* NSDate+Extension.swift in Sources */,
 				FE706D80251B42810023F144 /* MoreSelectBottomView.swift in Sources */,
 				FE706D56251B42810023F144 /* TestVC.swift in Sources */,
@@ -1528,7 +1522,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.4;
+				MARKETING_VERSION = 1.0.4;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.salesvalley.tcpapp;
 				PRODUCT_NAME = "销售大咖";
@@ -1558,7 +1552,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.4;
+				MARKETING_VERSION = 1.0.4;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.salesvalley.tcpapp;
 				PRODUCT_NAME = "销售大咖";

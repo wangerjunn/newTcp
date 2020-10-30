@@ -13,7 +13,6 @@
 #import "NewTcpApp-Swift.h"
 #import <UMShare/UMShare.h>
 #import <WeiboSDK.h>
-#import "ApplePayViewController.h"
 #import <UMCommon/UMCommon.h>
 #import <UMCommon/UMRemoteConfig.h>
 #import <UMCommon/UMRemoteConfigSettings.h>
@@ -62,7 +61,6 @@
             
             ViewController *viewController = [[ViewController alloc] init];
             
-//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[ApplePayViewController new]];
             self.window.rootViewController = viewController;
             [self.window makeKeyAndVisible];
             
@@ -167,27 +165,6 @@ void uncaughtExceptionHandler(NSException*exception){
      country 微信用户当前国家信息
      */
     
-    
-//    if([resp isKindOfClass:[SendAuthResp class]]) { // 微信登录
-//
-//
-//    } else if([resp isKindOfClass:[PayResp class]]) {
-//        // 微信支付
-//        if (self.WXCallBackResultBlock) {
-//            self.WXCallBackResultBlock(resp);
-//        }
-//    }
-//    else if ([resp isKindOfClass:[SendMessageToWXResp class]]){ // 微信分享
-//        if (self.WXCallBackResultBlock) {
-//            self.WXCallBackResultBlock(resp);
-//        }
-//        SendMessageToWXResp *res = (SendMessageToWXResp *)resp;
-//        if(res.errCode == 0){
-//            NSLog(@"用户分享成功");
-//        } else if (res.errCode == -4) {
-//            NSLog(@"用户取消分享");
-//        }
-//    }
 }
 
 - (void)didReceiveWeiboRequest:(WBBaseRequest *)request {
